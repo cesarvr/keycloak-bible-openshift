@@ -3,7 +3,7 @@
 This is the most common authentication, in this scenario the user go to your web page and clicks a login button, then the user is redirected to a authorization agent (like Keycloak) for authentication, when he finish the user is redirected back to your webpage with a token.
 
 
-## Authorization URL
+## Authorization URL
 
 For this type of login we would need the ``authorization_endpoint:`` endpoint from the [discovery endpoint](https://github.com/cesarvr/keycloak) and we need to construct the following URL:
 
