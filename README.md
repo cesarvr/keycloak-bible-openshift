@@ -24,7 +24,7 @@ This URL will return a list of endpoints that you need to perform various types 
 ```
 
 
-## Authentication Types
+## Authentication Types
 
 - [Using WebUI](https://github.com/cesarvr/keycloak/tree/master/web-ui)
-    - The user authenticate himself. 
+    - The user authenticate against an authentication agent (like Keycloak). 
