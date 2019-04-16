@@ -192,3 +192,8 @@ oc set env deploy web-auth ROUTE=http://web-auth-testing-1.apps.my-openshift-clu
 ```
 
 Now your service should be able to handle basica OAuth2 authentication against Keycloak.
+
+
+
+For more information about OAuth2 go to this site ![](https://aaronparecki.com/oauth-2-simplified/).
+
