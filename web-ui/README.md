@@ -195,5 +195,5 @@ Now your service should be able to handle basica OAuth2 authentication against K
 
 
 
-For more information about OAuth2 go to this site ![](https://aaronparecki.com/oauth-2-simplified/).
+For more information about OAuth2 go to [this site](https://aaronparecki.com/oauth-2-simplified/).
 
