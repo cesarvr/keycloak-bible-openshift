@@ -1,4 +1,7 @@
-## OAuth2 Discovery
+## OAuth2 
+
+
+### Discovery
 
 OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built in this form:
 
