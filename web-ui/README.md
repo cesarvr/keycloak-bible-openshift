@@ -165,7 +165,7 @@ Add the library:
 let okd = require('okd-runner')
 ```
 
-That's it now your applications should know how to deploy itself, by doing:
+That's it, now your applications should know how to deploy itself, now you just need to execute:
 
 ```sh
 node index.js -c

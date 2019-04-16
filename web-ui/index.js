@@ -17,7 +17,7 @@ function buildURL() {
         redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
     })
 
-    return `https://sso-testing-1.apps.tmagic-5e4a.openshiftworkshop.com/auth/realms/${realm}/protocol/openid-connect/auth?${params}`
+    return `https://${process.env['RH_SSO']}/auth/realms/${realm}/protocol/openid-connect/auth?${params}`
 }
 
 function buildLoginPage({URL}) {
