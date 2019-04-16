@@ -22,3 +22,9 @@ This URL will return a list of endpoints that you need to perform various types 
   "etc..."
 }
 ```
+
+
+## Authentication Types
+
+- [Using WebUI](https://github.com/cesarvr/keycloak/tree/master/web-ui)
+    - The user authenticate himself. 
