@@ -1,36 +1,11 @@
+## Simple Web App Authentication
 
-
-## OAuth2 Discovery
-
-OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built in this form:
-
-```
-    https://{Server}:{Port}/auth/realms/<your-realm>/.well-known/openid-configuration
-```
-This URL will return a list of endpoints that you need to perform various types of authentication:
-
-```json
-
-{
-  "issuer":"https://my-keycloak-server/auth/realms/demo-1",
-  "authorization_endpoint":"https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/auth",
-  "token_endpoint":"https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/token",
-  "token_introspection_endpoint":"https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/token/introspect",
-  "userinfo_endpoint":"https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/userinfo",
-  "end_session_endpoint":"https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/logout"
-  "etc..."
-}
-```
-
-
-## Web App
-
-This is the most common authentication, you want to authenticate the user against a third party agent (Keycloak in this case) before you allow the user to use your service.
+This is the most common authentication, in this scenario the user go to your web page and clicks a login button, then the user is redirected to a authorization agent (like Keycloak) for authentication, when he finish the user is redirected back to your webpage with a token.
 
 
 ## Authorization URL
 
-For this type of login we would need the ``authorization_endpoint:`` endpoint from above and we need to construct the following URL:
+For this type of login we would need the ``authorization_endpoint:`` endpoint from the [discovery endpoint](cesarvr/keycloak) and we need to construct the following URL:
 
 ```xml
  https://my-keycloak-server/auth/
