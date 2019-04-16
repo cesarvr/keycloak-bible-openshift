@@ -16,7 +16,7 @@ OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built i
 ```
 This URL will return a list of endpoints that you need to perform various types of authentication:
 
-```json
+```js
 
 {
   "issuer":"https://my-keycloak-server/auth/realms/demo-1",
