@@ -5,7 +5,7 @@ This is the most common authentication, in this scenario the user go to your web
 
 ## Authorization URL
 
-For this type of login we would need the ``authorization_endpoint:`` endpoint from the [discovery endpoint](https://github.com/cesarvr/keycloak) and we need to construct the following URL:
+For this type of login we would need the ``authorization_endpoint:`` endpoint from the [discovery endpoint](https://github.com/cesarvr/keycloak-examples#discovery) and we need to construct the following URL:
 
 ```xml
  https://my-keycloak-server/auth/
