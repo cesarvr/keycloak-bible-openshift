@@ -5,8 +5,8 @@
 
 OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built in this form:
 
-```
-    https://{Server}:{Port}/auth/realms/<your-realm>/.well-known/openid-configuration
+```xml
+ https://{Server}:{Port}/auth/realms/<your-realm>/.well-known/openid-configuration
 ```
 This URL will return a list of endpoints that you need to perform various types of authentication:
 
