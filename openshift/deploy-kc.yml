@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak 
+  labels:
+    app: kc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kc
+  template:
+    metadata:
+      labels:
+        app: kc
+    spec:
+      containers:
+      - name: keycloak
+        image: 172.30.1.1:5000/hello/keycloak
+        command: ['sh', '-c', '/opt/jboss/keycloak/bin/standalone.sh --server-config=standalone-ha.xml']
+        ports:
+        - containerPort: 8080
+        - containerPort: 9990
+        - containerPort: 8443
+        env:
+        - name: KEYCLOAK_USER
+          value: admin 
+        - name: KEYCLOAK_PASSWORD
+          value: admin
+        - name: KEYCLOAK_HTTP_PORT
+          value: "8080"
+        - name: KEYCLOAK_HTTPS_PORT
+          value: "8443"
+
