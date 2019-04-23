@@ -19,6 +19,7 @@ The ``oc import-image`` basically grabs an image from an external container imag
 
     ```sh
         oc get is
+        
         #NAME                   DOCKER REPO                                  TAGS      UPDATED
         #keycloak               172.30.1.1:5000/hello/keycloak
     ```
