@@ -37,3 +37,61 @@ To remove the service from the cluster once you finish you just need to run:
 ```sh
 node index --remove
 ```
+
+
+## Alternative Way Of Deployment
+
+
+### Manual Configuration 
+
+In some Linux distributions the TTY is not compatible with OKD-runner, but you can still use the self-deployer capability by writing the configuration file yourself: 
+
+
+
+
+
+### Using OC 
+
+You can start by installing [oc-client](https://github.com/cesarvr/Openshift#linuxmacosx). Once you install it you can login into your cluster and create a new [*binary build*](https://cesarvr.io/post/buildconfig/): 
+
+
+To create the build: 
+
+``sh
+oc new-build nodejs --binary=true --name=webui
+``
+
+
+Assuming your are in the ``/robot`` folder, you can now deploy your local code into the **build**: 
+
+``sh
+oc start-build bc/webui --from-file=.
+``
+
+
+Now you can create a deployment configuration: 
+
+First get the image: 
+
+``sh 
+ oc get is
+
+ # NAME         DOCKER REPO                                             TAGS      UPDATED
+ # webui        docker-registry.default.svc:5000/testing-2/webui
+``
+
+We pick the image URL and create the deployment:
+
+``sh
+ oc create dc bot --image=docker-registry.default.svc:5000/testing-2/webui
+``
+
+Finally we expose:
+
+``sh
+ oc expose dc/bot --port=8080 --target-port=8080
+ oc expose svc bot
+``
+
+
+
