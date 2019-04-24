@@ -7,12 +7,12 @@ function exchangeToken(token) {
     let params = {
         grant_type: 'authorization_code',
         code: token,
-        redirect_uri:'http://web-auth-testing-1.apps.tmagic-5e4a.openshiftworkshop.com/login',
         client_id: 'my-client',
-        client_secret: 'ef078f1f-f76a-4fee-9cf7-703221f4960e' 
+        client_secret: 'a5e98989-afae-45f8-9818-8e6f02eaa2b0', 
+        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
     }
 
-    let URL = 'https://sso-testing-1.apps.tmagic-5e4a.openshiftworkshop.com/auth/realms/demo-1/protocol/openid-connect/token' 
+    let URL = `https://${process.env['SSO']}/auth/realms/demo-1/protocol/openid-connect/token` 
 
     let options = {
         method: 'POST', 
@@ -47,6 +47,5 @@ function exchangeToken(token) {
 
 
 }
-
 
 module.exports = { exchangeToken }

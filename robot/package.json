@@ -1,5 +1,5 @@
 {
-    "name": "robot-oauth",
+    "name": "robot-auth",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",

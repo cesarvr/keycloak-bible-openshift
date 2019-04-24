@@ -7,18 +7,21 @@ var app = express()
 const PORT = 8080
 
 function buildURL() {
+    let endpoint = oauth.endpoints.get().authorization_endpoint 
 
-    const realm = 'demo-1'
+    if(endpoint === undefined)
+        throw 'Error generating URL in buildURL()'
 
     let params = qs.stringify({
         response_type: 'code',
         client_id: 'my-client',
         scope: 'my-scope',
         state: 'state123',
-        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
+        redirect_uri: `http://${process.env['ROUTE']  || 'URL_NOT_FOUND'}/login` 
     })
 
-    return `https://sso-testing-1.apps.tmagic-5e4a.openshiftworkshop.com/auth/realms/${realm}/protocol/openid-connect/auth?${params}`
+    console.log('auth_url: ', `${endpoint}?${params}`)
+    return `${endpoint}?${params}`
 }
 
 function buildLoginPage({URL}) {
@@ -35,19 +38,58 @@ function buildLoginPage({URL}) {
 }
 
 app.get('/', (req, res) => {
+    try{
     let page = buildLoginPage({ URL: buildURL() })
     res.send(page)
+    }catch(e) {
+        console.log('error: ', e)
+        res.send('<p>Something went wrong!</p>')
+    }
 })
 
+app.get('/discovery', (req, res) => {
+    if(oauth.endpoints.get() === undefined) 
+        res.send('empty')
+    else
+        res.send(oauth.endpoints.get())
+})
+
+let timerID = null 
+
 app.get('/login', (req, res) => {
+    if(timerID !== null) {
+        clearInterval(timerID)
+        console.log('cleaning interval')
+    }
+
+
     if(req.query.code){
         //if we got the code we can allow the user to use the service. 
         oauth.exchangeToken(req.query.code)
-             .then(resp => { 
-                 res.send(`<h1>Willkommen!</h1>`) 
-                 console.log('token->', resp)
+             .then(resp => {
+                 console.log('requesting token info...')
+                 let access_token = resp.access_token
+                 console.log('token->', resp.access_token)
+                 res.send(`<h1>Willkommen!</h1>`)
+
+                 timerID = setInterval(()=> {
+                     oauth.inspect(access_token).then(({body , status}) => {
+                         console.log('status: ',status)
+                        if(status === 200){ 
+                            console.log('token info:', body)
+                        }else {
+                            console.log('Not working...')
+                        }
+                     }).catch(err => {
+                        console.log('fail!', err)
+                     })
+                 }, 2000)
              })
-             .catch(err => res.send(`<p>Something went wrong!!</p>`))
+            .catch(err => { 
+                console.log('Crash: ', err)
+                res.send(`<p>Something went wrong!!</p>`) 
+            
+            })
     }else {
         console.log('Not token supplied...', Date.now())
         res.status(401).send(`<h2> Not Token </h2>`)
