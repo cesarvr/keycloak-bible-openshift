@@ -7,7 +7,7 @@ var app = express()
 const PORT = 8080
 
 function buildURL() {
-    let endpoint = oauth.endpoints.get().authorization_endpoint 
+    let endpoint = oauth.endpoints.get().authorization_endpoint
 
     if(endpoint === undefined)
         throw 'Error generating URL in buildURL()'
@@ -17,7 +17,7 @@ function buildURL() {
         client_id: 'my-client',
         scope: 'my-scope',
         state: 'state123',
-        redirect_uri: `http://${process.env['ROUTE']  || 'URL_NOT_FOUND'}/login` 
+        redirect_uri: `http://${process.env['ROUTE']  || 'URL_NOT_FOUND'}/login`
     })
 
     console.log('auth_url: ', `${endpoint}?${params}`)
@@ -48,13 +48,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/discovery', (req, res) => {
-    if(oauth.endpoints.get() === undefined) 
+    if(oauth.endpoints.get() === undefined)
         res.send('empty')
     else
         res.send(oauth.endpoints.get())
 })
 
-let timerID = null 
+let timerID = null
 
 app.get('/login', (req, res) => {
     if(timerID !== null) {
@@ -64,7 +64,7 @@ app.get('/login', (req, res) => {
 
 
     if(req.query.code){
-        //if we got the code we can allow the user to use the service. 
+        //if we got the code we can allow the user to use the service.
         oauth.exchangeToken(req.query.code)
              .then(resp => {
                  console.log('requesting token info...')
@@ -72,23 +72,27 @@ app.get('/login', (req, res) => {
                  console.log('token->', resp.access_token)
                  res.send(`<h1>Willkommen!</h1>`)
 
-                 timerID = setInterval(()=> {
+                 timerID = setInterval( () => {
                      oauth.inspect(access_token).then(({body , status}) => {
-                         console.log('status: ',status)
-                        if(status === 200){ 
-                            console.log('token info:', body)
+                        if(status === 200){
+                            console.log(`\x1b[37m status: \x1b[36m${status}`)
+                            console.log(`\x1b[37m user: \x1b[36m${body.username}`)
+                            console.log(`\x1b[37m user active: \x1b[36m${body.active}`)
+                            console.log(`\n\n\n`)
+                            //console.log('user: ', JSON.stringify(body,null,2))
                         }else {
-                            console.log('Not working...')
+                            console.log(`\x1b[37 mstatus: \x1b[31m${status}`)
+                            console.log(' Not working...')
+                            console.log('\n\n\n')
                         }
                      }).catch(err => {
                         console.log('fail!', err)
                      })
                  }, 2000)
              })
-            .catch(err => { 
+            .catch(err => {
                 console.log('Crash: ', err)
-                res.send(`<p>Something went wrong!!</p>`) 
-            
+                res.send(`<p>Something went wrong!!</p>`)
             })
     }else {
         console.log('Not token supplied...', Date.now())
@@ -98,5 +102,4 @@ app.get('/login', (req, res) => {
 
 // convention over configuration -> 8080
 var server = app.listen(PORT)
-
 console.log(`listening for request in ${PORT}`)

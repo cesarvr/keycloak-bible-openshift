@@ -18,9 +18,12 @@ let store = function() {
 
 let discovery = function({sso_url}) {
     console.log('discovering...')
+
     let REALM = process.env['REALM']
     let __URL = `https://${sso_url}/auth/realms/${REALM}/.well-known/openid-configuration`
+
     console.log('discovery: ', __URL)
+
     let params = {
         method: 'GET',
         rejectUnauthorized: true,
@@ -30,13 +33,16 @@ let discovery = function({sso_url}) {
         url: __URL
     }
 
-    console.log(params)
     request(params,
         function(error, resp, body) {
-            console.log('body:', body)
-            console.log('error', error)
-            store.set(body)
-            console.log('...finished')
+
+            if(resp.statusCode === 200) {
+              console.log('correct')
+              store.set(body)
+            }
+
+            if(error)
+              console.log('error', error)
         })
 }({sso_url: process.env['SSO']})
 
@@ -52,7 +58,7 @@ let discovery = function({sso_url}) {
 
 function token_introspection (token) {
     let endpoint = store.get().token_introspection_endpoint
-    console.log(`checking token: ${endpoint}`)
+    console.log(`\x1b[37mchecking token: ${endpoint}`)
 
     return new Promise((resolve, reject) => {
         request({
@@ -73,7 +79,7 @@ function token_introspection (token) {
                 if(error){
                     reject(error)
                 }
-
+                body = JSON.parse(body)
                 resolve({body, status: resp.statusCode})
             })
     })
