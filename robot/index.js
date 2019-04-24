@@ -81,12 +81,12 @@ app.get('/login', (req, res) => {
                             console.log(`\n\n\n`)
                             //console.log('user: ', JSON.stringify(body,null,2))
                         }else {
-                            console.log(`\x1b[37 mstatus: \x1b[31m${status}`)
                             console.log(' Not working...')
                             console.log('\n\n\n')
                         }
                      }).catch(err => {
-                        console.log('fail!', err)
+                        console.log(`\x1b[31m Token introspection failiure: ${err}`)
+                        console.log(`\x1b[34m Server drop our session, need to re-authenticate`)
                      })
                  }, 2000)
              })

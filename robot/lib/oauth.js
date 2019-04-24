@@ -16,7 +16,7 @@ let store = function() {
 }()
 
 
-let discovery = function({sso_url}) {
+const discovery = function({sso_url}) {
     console.log('discovering...')
 
     let REALM = process.env['REALM']
@@ -34,17 +34,21 @@ let discovery = function({sso_url}) {
     }
 
     request(params,
-        function(error, resp, body) {
+        (error, resp, body) => {
 
-            if(resp.statusCode === 200) {
-              console.log('correct')
-              store.set(body)
+            if(error) {
+                console.log('error', error)
+                console.log('trying again...')
+
+                // Try every 3 seconds, in case of failiure...
+                setTimeout( () => discovery({sso_url: process.env['SSO']}), 3000)
+            }else{
+                console.log('correct')
+                store.set(body)
             }
-
-            if(error)
-              console.log('error', error)
         })
-}({sso_url: process.env['SSO']})
+}
+discovery({sso_url: process.env['SSO']})
 
 
 /*
@@ -79,8 +83,12 @@ function token_introspection (token) {
                 if(error){
                     reject(error)
                 }
-                body = JSON.parse(body)
-                resolve({body, status: resp.statusCode})
+                if(resp.statusCode === 200) {
+                    body = JSON.parse(body)
+                    resolve({body, status: resp.statusCode})
+                }else{
+                    reject({status: resp.statusCode})
+                }
             })
     })
 }
