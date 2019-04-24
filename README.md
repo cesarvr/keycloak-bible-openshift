@@ -35,9 +35,10 @@ This URL will return a list of endpoints that you need to perform various types 
 This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-2-simplified/).
 
 - [Using WebUI](https://github.com/cesarvr/keycloak/tree/master/web-ui)
-    - The user authenticate against an authentication agent (like Keycloak). 
+    - Sample service to perform simple authentication using OpenID OAuth2. 
     
-    
+- [Testing Horizontal Scaling](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
+    - Just a simple service testing that the correct horizontal scaling of Keycloak instances. 
     
     
     
