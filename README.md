@@ -50,4 +50,4 @@ This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-
 - Keycloak.
   - [Keycloak Documentation](https://www.keycloak.org/docs/2.5/getting_started/index.html)
 - Getting Started With OAuth2 From 0 to Hero.
-  - [Step by Step OAuth2 guide](https://aaronparecki.com/oauth-2-simplified/)
+  - [Simple OAuth2 guide](https://aaronparecki.com/oauth-2-simplified/)
