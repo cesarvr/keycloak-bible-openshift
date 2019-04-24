@@ -56,7 +56,30 @@ In some Linux distributions the TTY is not compatible with OKD-runner, but you c
 }
 ```
 
+Now you can try the self-deploy method with: 
 
+```sh
+  node index.js --cloud
+```
+
+### With Docker
+
+This project also includes a ``Dockerfile``, so if you have docker you don't need to install anything just run: 
+
+
+Make an image: 
+
+```sh
+docker build -t deployer .
+```
+
+Run the image
+
+```sh
+docker run -it deployer 
+```
+
+ 
 
 
 ### Using OC 
