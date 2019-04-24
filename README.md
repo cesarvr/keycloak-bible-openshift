@@ -44,10 +44,13 @@ This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-
 
 ## More Docs...
 
-- Detailed implementation of OAuth2.
+- Detailed implementation of OAuth2:
   - [OAuth2 Documentation](https://www.oauth.com/)
   - [OAuth2 RFC](https://tools.ietf.org/html/rfc6749)
-- Keycloak.
+  
+- Keycloak:
   - [Keycloak Documentation](https://www.keycloak.org/docs/2.5/getting_started/index.html)
-- Getting Started With OAuth2 From 0 to Hero.
+  
+  
+- Getting Started With OAuth2:
   - [Simple OAuth2 guide](https://aaronparecki.com/oauth-2-simplified/)
