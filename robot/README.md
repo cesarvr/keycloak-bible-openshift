@@ -5,7 +5,7 @@ This authenticate an user against Keycloak obtaining a token (by login in) and u
 
 ## Install
 
-``sh
+```sh
  npm install
  node index.js --cloud # To deploy
 ```
