@@ -22,3 +22,18 @@ You can use ``oc set env`` for this example:
 ```sh
   oc set env deploy web-test SSO=my-keycloak.domain
 ```
+
+
+## Running
+
+Once we finish this setup we can execute this program and login to the realm using some credentials.
+
+
+
+## Cleaning
+
+To remove the service from the cluster once you finish you just need to run:
+
+```sh
+node index --remove
+```
