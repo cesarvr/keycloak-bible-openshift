@@ -46,6 +46,15 @@ node index --remove
 
 In some Linux distributions the TTY is not compatible with OKD-runner, but you can still use the self-deployer capability by writing the configuration file yourself: 
 
+```json
+{
+    "cluster": "hostname-api-server",
+    "user": "<your-user>",
+    "password": "<your-password>",
+    "strictSSL": false,
+    "namespace": "namespace"
+}
+```
 
 
 
