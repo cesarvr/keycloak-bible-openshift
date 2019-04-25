@@ -30,6 +30,30 @@ Once we finish this setup we can execute this program and login to the realm usi
 
 
 
+
+### With Docker
+
+If you don't want to install Node.js, you can still install this service with docker:
+
+Jump inside the folder and do:
+
+```sh
+docker build -t deploy-me .
+```
+
+This will create and image then you just execute this image using: 
+
+```sh
+docker run -it deploy-me
+```
+
+Here is a full example: 
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/docker-deployment.gif?raw=true)
+
+
+
+
 ## Cleaning
 
 To remove the service from the cluster once you finish you just need to run:
