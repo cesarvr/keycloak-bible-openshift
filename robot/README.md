@@ -108,48 +108,48 @@ docker run -it deployer
  
 
 
-### Using OC 
+### The Hard Way (Using OC) 
 
 You can start by installing [oc-client](https://github.com/cesarvr/Openshift#linuxmacosx). Once you install it you can login into your cluster and create a new [*binary build*](https://cesarvr.io/post/buildconfig/): 
 
 
 To create the build: 
 
-``sh
+```sh
 oc new-build nodejs --binary=true --name=webui
-``
+```
 
 
 Assuming your are in the ``/robot`` folder, you can now deploy your local code into the **build**: 
 
-``sh
+```sh
 oc start-build bc/webui --from-file=.
-``
+```
 
 
 Now you can create a deployment configuration: 
 
 First get the image: 
 
-``sh 
+```sh 
  oc get is
 
  # NAME         DOCKER REPO                                             TAGS      UPDATED
  # webui        docker-registry.default.svc:5000/testing-2/webui
-``
+```
 
 We pick the image URL and create the deployment:
 
-``sh
+```sh
  oc create dc bot --image=docker-registry.default.svc:5000/testing-2/webui
-``
+```
 
 Finally we expose:
 
-``sh
+```sh
  oc expose dc/bot --port=8080 --target-port=8080
  oc expose svc bot
-``
+```
 
 
 
