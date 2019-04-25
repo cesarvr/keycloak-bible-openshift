@@ -70,7 +70,7 @@ You can use ``oc set env`` for this example:
 
 ### Manual Configuration 
 
-In some Linux distributions the TTY is not compatible with OKD-runner, but you can still use the self-deployer capability by writing the configuration file yourself: 
+In some Linux distributions the TTY is not compatible with OKD-runner, but you can still use the self-deploy capability by writing the configuration file yourself: 
 
 ```json
 {
@@ -82,7 +82,19 @@ In some Linux distributions the TTY is not compatible with OKD-runner, but you c
 }
 ```
 
-Now you can try the self-deploy method with: 
+Or you can also use a token: 
+
+```json
+{
+    "cluster": "https://my-openshift-server:port",
+    "namespace": "testing",
+    "token": "NSvPJQk7sHhJ.......................",
+    "strictSSL": false
+}
+```
+
+
+Save this file in the same folder as this project and then execute self-deploy mechanism: 
 
 ```sh
   node index.js --cloud
