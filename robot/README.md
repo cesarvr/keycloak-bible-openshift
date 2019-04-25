@@ -2,6 +2,10 @@
 
 This authenticate an user against Keycloak obtaining a token (by login in) and use it to ping the Keycloak deployment (OpenShift Service), testing all available pods acknowledge the token.
 
+For more info: 
+
+- [Keycloak caches configuration](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html)
+
 
 ### Install
 
