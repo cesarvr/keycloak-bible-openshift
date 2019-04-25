@@ -93,12 +93,12 @@ Or you can also use a token:
 }
 ```
 
-
 Save this file in the same folder as this project and then execute self-deploy mechanism: 
 
 ```sh
   node index.js --cloud
 ```
+> You can use this configuration file in conjunction with docker build method we discuss previously.
 
 ### With Docker
 
