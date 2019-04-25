@@ -108,7 +108,7 @@ docker run -it deployer
  
 
 
-### The Hard Way (Using OC) 
+## The Hard Way (Using OC) 
 
 You can start by installing [oc-client](https://github.com/cesarvr/Openshift#linuxmacosx). Once you install it you can login into your cluster and create a new [*binary build*](https://cesarvr.io/post/buildconfig/): 
 
