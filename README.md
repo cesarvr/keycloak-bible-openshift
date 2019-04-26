@@ -16,15 +16,15 @@ OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built i
 ```
 This URL will return a list of endpoints required to use OAuth2 authentication:
 
-```js
+```json
 
 {
   "issuer":"https://my-keycloak-server/auth/realms/demo-1",
-  "authorization_endpoint":"https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/auth",
-  "token_endpoint":".../protocol/openid-connect/token",
-  "token_introspection_endpoint":".../demo-1/protocol/openid-connect/token/introspect",
-  "userinfo_endpoint":".../demo-1/protocol/openid-connect/userinfo",
-  "end_session_endpoint":".../demo-1/protocol/openid-connect/logout"
+  "authorization_endpoint":".../auth",
+  "token_endpoint":".../token",
+  "token_introspection_endpoint":".../introspect",
+  "userinfo_endpoint":".../userinfo",
+  "end_session_endpoint":".../logout"
   "etc..."
 }
 ```
