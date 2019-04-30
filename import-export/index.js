@@ -33,7 +33,7 @@ const pick = (name, ress) => ress.filter( r => r.kind === name ).pop()
 
 okd({ 
     cluster:'console.pro-eu-west-1.openshift.com', 
-    token:'NSvPJQk7sHhJCBMRmF7sCZuUcbIB5WBqeaLWzJcrFYU' 
+    token:'your-token' 
 })
     .then(api => {
         api = api.namespace('keycloak')
