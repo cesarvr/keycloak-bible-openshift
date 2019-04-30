@@ -1,0 +1,18 @@
+{
+	"spec": {
+		"containers": [{
+           "name":"sso",
+			"volumeMounts": [{
+				"mountPath": "/var/tmp/import/",
+				"name": "keycloak-data"
+			}]
+		}],
+		"volumes": [{
+			"name": "keycloak-data",
+			"configMap": {
+				"secretName": "keycloak-data"
+			}
+		}]
+
+	}
+}

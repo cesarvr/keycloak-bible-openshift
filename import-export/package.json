@@ -1,0 +1,14 @@
+{
+  "name": "oc-keycloak-importer",
+  "version": "1.0.0",
+  "description": "Exporting information in Keycloak is *trivial*, as the [documentation state](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) we just need to locate the ``standalone.sh`` script and execute as follows:",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
