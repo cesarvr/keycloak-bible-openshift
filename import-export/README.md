@@ -1,6 +1,6 @@
 ## Export
 
-Exporting information in Keycloak is *trivial*, as the [documentation] (https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state we just need to locate the ``standalone.sh`` script and execute as follows: 
+Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state we just need to locate the ``standalone.sh`` script and execute as follows: 
 
 
 ```sh
