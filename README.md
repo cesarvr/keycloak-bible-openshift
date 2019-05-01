@@ -48,6 +48,7 @@ This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-
 - Detailed implementation of OAuth2:
   - [OAuth2 Documentation](https://www.oauth.com/)
   - [OAuth2 RFC](https://tools.ietf.org/html/rfc6749)
+  - [Importing Users](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
   
 - Keycloak:
   - [Keycloak Documentation](https://www.keycloak.org/docs/2.5/getting_started/index.html)
