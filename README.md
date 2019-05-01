@@ -42,7 +42,7 @@ This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-
     - Just a simple service testing that the correct horizontal scaling of Keycloak instances.
 
 - [Importing Users](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
-    - How to Import/Export Keycloak users in OpenShift?. 
+    - How to Import/Export Keycloak users in OpenShift. 
   
 
 
