@@ -5,6 +5,7 @@ This authenticate an user against Keycloak obtaining a token (by login in) and u
 For more info: 
 
 - [Keycloak caches configuration](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html)
+- [Data replication & Failover](https://www.keycloak.org/docs/3.0/server_installation/topics/cache/replication.html) This basically says, that Keycloak elect an pod to be the owner of the sessions if this pod owning the data crash, then users need to logging again.
 
 
 ### Install

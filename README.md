@@ -41,6 +41,9 @@ This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-
 - [Testing Horizontal Scaling](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
     - Just a simple service testing that the correct horizontal scaling of Keycloak instances.
 
+- [Importing Users](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
+    - How to Import/Export Keycloak users in OpenShift. 
+  
 
 
 ## More Docs...
@@ -48,7 +51,7 @@ This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-
 - Detailed implementation of OAuth2:
   - [OAuth2 Documentation](https://www.oauth.com/)
   - [OAuth2 RFC](https://tools.ietf.org/html/rfc6749)
-  
+
 - Keycloak:
   - [Keycloak Documentation](https://www.keycloak.org/docs/2.5/getting_started/index.html)
   
