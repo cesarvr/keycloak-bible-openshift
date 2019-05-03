@@ -1,11 +1,34 @@
-## Simple Web App Authentication
+## OAuth2 Authentication Example
 
 This is the most common authentication, in this scenario the user go to your web page and clicks a login button, then the user is redirected to a authorization agent (like Keycloak) for authentication, when he finish the user is redirected back to your webpage with a token.
+
+### Discovery
+
+OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built in this form:
+
+```xml
+ https://{Server}:{Port}/auth/realms/<your-realm>/.well-known/openid-configuration
+```
+This URL will return a list of endpoints required to use OAuth2 authentication:
+
+```json
+
+{
+  "issuer":"https://my-keycloak-server/auth/realms/demo-1",
+  "authorization_endpoint":".../auth",
+  "token_endpoint":".../token",
+  "token_introspection_endpoint":".../introspect",
+  "userinfo_endpoint":".../userinfo",
+  "end_session_endpoint":".../logout"
+  "etc..."
+}
+```
+
 
 
 ## Authorization URL
 
-For this type of login we would need the ``authorization_endpoint:`` endpoint from the [discovery endpoint](https://github.com/cesarvr/keycloak-examples#discovery) and we need to construct the following URL:
+For this type of login we would need the ``authorization_endpoint:`` endpoint from the discovery endpoint and we need to construct the following URL:
 
 ```xml
  https://my-keycloak-server/auth/
