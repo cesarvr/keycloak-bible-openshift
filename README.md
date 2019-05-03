@@ -1,52 +1,23 @@
 ## Keycloak Setup
 
-The best way to get started with Keycloak is to follow this getting [started guide](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot), there you will learn how to setup Keycloak and create realms and client.
+The best way to get started with Red Hat Single Sign On (RHSSO) is to follow this getting [started guide](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot), there you will learn how to setup Keycloak and create realms, users and client.
 
-Once you finish you learn the basics you can come back to this guide to learn how to create a client capable of using Keycloak OpenID/OAuth2 to protect your services.
-
-
-## OAuth2
-
-### Discovery
-
-OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built in this form:
-
-```xml
- https://{Server}:{Port}/auth/realms/<your-realm>/.well-known/openid-configuration
-```
-This URL will return a list of endpoints required to use OAuth2 authentication:
-
-```json
-
-{
-  "issuer":"https://my-keycloak-server/auth/realms/demo-1",
-  "authorization_endpoint":".../auth",
-  "token_endpoint":".../token",
-  "token_introspection_endpoint":".../introspect",
-  "userinfo_endpoint":".../userinfo",
-  "end_session_endpoint":".../logout"
-  "etc..."
-}
-```
+This guide is about how to configure and run RHSSO with OpenShift.
 
 
-### Authentication Examples
+### Guides
 
-This examples follow this [awesome OAuth2 guide](https://aaronparecki.com/oauth-2-simplified/).
-
-
-- [Using WebUI](https://github.com/cesarvr/keycloak/tree/master/web-ui)
-    - Sample service to perform simple authentication using OpenID OAuth2.
+- [How To Use OAuth2 To Protect Your Server](https://github.com/cesarvr/keycloak/tree/master/web-ui)
+    - How to protect your services with OAuth2 from scratch. 
 
 - [Testing Horizontal Scaling](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
-    - Just a simple service testing that the correct horizontal scaling of Keycloak instances.
+    - A simple service to check that RHSSO/Keycloak instances are running in domain mode and they share a user session.
 
-- [Importing Users](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
-    - How to Import/Export Keycloak users in OpenShift. 
+- [Importing/Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
+    - How to Import/Export RHSSO/Keycloak users in OpenShift. 
   
-
-
-## More Docs...
+  
+## Diving Deep
 
 - Detailed implementation of OAuth2:
   - [OAuth2 Documentation](https://www.oauth.com/)
