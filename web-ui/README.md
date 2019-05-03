@@ -26,14 +26,84 @@ This URL will return a list of endpoints required to use OAuth2 authentication:
 
 
 
-## Authorization URL
 
-For this type of login we would need the ``authorization_endpoint:`` endpoint from the discovery endpoint and we need to construct the following URL:
+
+### Hello World Nodejs
+
+We can start by making a simple HTTP server using Javascript: 
+
+```sh
+ var express = require('express')
+ var okd_runner = require('okd-runner')
+ var app = express()
+ 
+ app.get('/', (req, res) => res.send('<h1> Hello !</h1>') )
+
+ console.log('listening in port 8080')
+ app.listen(8080)
+```
+
+We save this into ``index.js`` and we execute it: 
+
+```sh
+node index.js
+# listening in port 8080
+```
+
+
+### Writing a Login Page
+
+### Login Page
+
+First thing we need is to write a small webpage to as the user for his login credentials:  
+
+```js
+var express = require('express')
+
+var app = express()
+const PORT = 8080
+
+
+function askForCredentials({URL}) {
+    return `<!DOCTYPE HTML>
+            <html>
+              <head>
+                <title>Hello OAuth2</title>
+              </head>
+              <body>
+                <h1> Register </h1>
+                <a href="${URL}">Login</a>
+              </body>
+            </html>`
+}
+
+
+app.get('/', (req, res) => {
+  let page = buildLoginPage({ URL: 'http://test.com' })
+  res.send(page)
+})
+```
+
+If we run our server again we should see a nice login page. 
+
+![Login Page](https://github.com/cesarvr/keycloak-examples/blob/master/web-ui/docs/login.png?raw=true)
+
+
+
+### Authorization URL
+
+For this type of login we would need the ``authorization_endpoint:`` URL, this URL will allow us, to authenticate the user against a third party agent (RHSSO/Keycloak), the advantage of doing this is that our service don't care how this authentication is done we just follow an interface (OAuth2 protocol):
+
+We need to call this URL 
+
+```
+ https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/auth
+```
+
+With this query parameters:
 
 ```xml
- https://my-keycloak-server/auth/
- realms/demo-1/protocol/openid-connect/auth?
- response_type=code
+...auth?response_type=code
  &client_id=my-client
  &redirect_uri=https%3A%2F%2Flocalhost%3A666%2F
  &scope=my-scope
@@ -67,47 +137,6 @@ function buildURL() {
     return `https://my-keycloak-server/auth/realms/${realm}/protocol/openid-connect/auth?${params}`
 }
 ```
-
-
-
-
-## Login Page
-
-Now we need to show the user a login web page like this one:
-
-
-```js
-var express = require('express')
-
-var app = express()
-const PORT = 8080
-
-
-function askForCredentials({URL}) {
-    return `<!DOCTYPE HTML>
-            <html>
-              <head>
-                <title>Hello OAuth2</title>
-              </head>
-              <body>
-                <h1> Register </h1>
-                <a href="${URL}">Login</a>
-              </body>
-            </html>`
-}
-
-
-app.get('/', (req, res) => {
-  let page = buildLoginPage({ URL: buildURL() })
-  res.send(page)
-})
-```
-
-![Login Page]()
-
-Now when the user clicks login, he will be redirected to the authentication agent (Keycloak) that will take care of the authentication for us, our application is completely isolated from any details about security in general.
-
-But there is something we are missing, we need to implement a way for Keycloak to inform our application of the success or failure.
 
 
 
