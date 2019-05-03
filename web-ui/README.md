@@ -289,20 +289,38 @@ And after we perform authentication against RH SSO we should get something simil
 This is not to secure as anybody can write arbitrary values and make our service happy, so let's implement a mechanism to test the token against RH SSO.
 
 
+### Exchange Token
 
+When we receive the token in our ``/callback`` we need to exchange this *token-code* against RHSSO, and for this we need to do this by sending a **POST** request to the following URL: 
 
+```xml
+ https://<our-rhsso-instance>/auth/realms/demo-1/protocol/openid-connect/token
+```
 
+> We can obtain this URL by reading the ``token_endpoint`` field in the [discovery payload](https://github.com/cesarvr/keycloak-examples/tree/master/web-ui#discovery).
 
+This **POST** request require the following parameters: 
 
+```js
+ let params = {
+        grant_type: 'authorization_code',
+        code: token,
+        client_id: 'my-client',
+        client_secret: 'a5e98989-afae-45f8-9818-8e6f02eaa2b0', 
+        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
+    }
+```
 
+- **auhtorization_code** An authorization grant is a credential representing the resource
+   owner's authorization..., [more about authorization grant](https://tools.ietf.org/html/rfc6749#page-8). We use here the ``authorization_code``.
+- **code** The token code we receive in the ``/callback``. 
+- **client_id** - You need to [register a client in RHSSO](https://www.keycloak.org/docs/latest/getting_started/index.html#creating-and-registering-the-client), usually the name of the client is the client ID.
 
+![](https://www.keycloak.org/docs/latest/getting_started/keycloak-images/clients.png)
 
+- **client_secret** This is an extra security measure is basically a secret code shared between trusted entities, in our case our service and RH SSO. This make it a bit difficult for attacker that one to request this resource. [How configure this ?](https://www.keycloak.org/docs/2.5/server_admin/topics/clients/oidc/confidential.html)
 
-
-
-
-
-
+- **redirect_uri** Again we need to define a callback here
 
 
 
