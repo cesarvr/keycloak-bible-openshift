@@ -286,7 +286,7 @@ And after we perform authentication against RH SSO we should get something simil
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-03%20at%2013.22.44.png?raw=true)
 
 
-This is not to secure as anybody can write arbitrary values and make our service happy, so let's implement a mechanism to test the token against RH SSO.
+This code represents a sort of public key from the user, now we need to take this public key to retrieve an  
 
 
 ### Exchange Token
