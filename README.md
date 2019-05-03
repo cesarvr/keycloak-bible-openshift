@@ -7,7 +7,7 @@ This guide is about how to configure and run RHSSO with OpenShift.
 
 ### Guides
 
-- [How To Use RH-SSOO & Auth2 To Protect Your Server](https://github.com/cesarvr/keycloak/tree/master/web-ui)
+- [How To Use RH-SSO & Auth2 To Protect Your Server](https://github.com/cesarvr/keycloak/tree/master/web-ui)
     - How to protect your services with OAuth2 from scratch. 
 
 - [Testing Horizontal Scaling](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
