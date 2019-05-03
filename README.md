@@ -1,8 +1,8 @@
 ## Keycloak Setup
 
-The best way to get started with Keycloak is to follow this getting [started guide](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot), there you will learn how to setup Keycloak and create realms and client.
+The best way to get started with Red Hat Single Sign On (RHSSO) is to follow this getting [started guide](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot), there you will learn how to setup Keycloak and create realms, users and client.
 
-Once you finish you learn the basics you can come back to this guide to learn how to create a client capable of using Keycloak OpenID/OAuth2 to protect your services.
+This guide is about how to configure and run RHSSO with OpenShift.
 
 
 ## OAuth2
