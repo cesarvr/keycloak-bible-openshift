@@ -7,11 +7,11 @@ This guide is about how to configure and run RHSSO with OpenShift.
 
 ### Guides
 
-- [How To Use RH-SSO & Auth2 To Protect Your Server](https://github.com/cesarvr/keycloak/tree/master/web-ui)
-    - How to protect your services with OAuth2 from scratch. 
+- [How To Create An OAuth2 Client](https://github.com/cesarvr/keycloak/tree/master/web-ui)
+    - Writing a simple OAuth2 client from scratch, in Node.js. 
 
 - [Testing Horizontal Scaling](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
-    - A simple service to check that RHSSO/Keycloak instances are running in domain mode and they share a user session.
+    - How to use a simple service to check that RHSSO/Keycloak instances are running in domain mode and they share a user session.
 
 - [Importing/Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
     - How to Import/Export RHSSO/Keycloak users in OpenShift. 
