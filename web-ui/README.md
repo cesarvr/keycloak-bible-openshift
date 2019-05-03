@@ -398,11 +398,27 @@ We redeploy this and we should have our OAuth2 client up and running.
 
 
 
+If we check the logs we should be able to see something similar to this: 
 
+```sh
+▶ node index.js -c
+Initializing...  ok
+creating objects  ok
+building  ok
 
+   URL:  http://web-auth-testing-1.apps.my-openshift-cluster.com
+   ....
+   ....
+   > web-auth@1.0.0 start /opt/app-root/src
+   > node index.js
+   
+   
+sucess: {
+  "access_token":"RsT5OjbzRn430zqMLgV3a...",
+  "expires_in":3600
+}
 
-
-
+```
 
 
 
