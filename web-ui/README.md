@@ -286,12 +286,12 @@ And after we perform authentication against RH SSO we should get something simil
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-03%20at%2013.22.44.png?raw=true)
 
 
-This code represents a sort of public key from the user, now we need to take this public key to retrieve an  
+This code represents a sort of public key from the user, now we need to take this public key authenticate our client (our service) against RH SSO, if everything went well we get back an access token that we are going to use to access user resources.
 
 
 ### Exchange Token
 
-When we receive the token in our ``/callback`` we need to exchange this *token-code* against RHSSO, and for this we need to do this by sending a **POST** request to the following URL: 
+The last step is to use this user authorization key we receive in our ``/callback?code=AUTH_CODE_HERE``) and use this to obtain a token, then we can use this token to finally make request.  
 
 ```xml
  https://<our-rhsso-instance>/auth/realms/demo-1/protocol/openid-connect/token
@@ -320,7 +320,89 @@ This **POST** request require the following parameters:
 
 - **client_secret** This is an extra security measure is basically a secret code shared between trusted entities, in our case our service and RH SSO. This make it a bit difficult for attacker that one to request this resource. [How configure this ?](https://www.keycloak.org/docs/2.5/server_admin/topics/clients/oidc/confidential.html)
 
-- **redirect_uri** Again we need to define a callback here
+- **redirect_uri** We need the same redirect_uri we send the first time, RH SSO will check this URI in their registry and should match the one that made the initial request.
+
+
+
+### Request
+
+
+To make this **POST** request we are a going to use a Node.js library called [Request](https://www.npmjs.com/package/request) that would take care of the details for us:
+
+We install it doing: 
+
+```sh
+npm install request --save
+```
+
+Now we write our ``exchange_token`` function by defining the parameters: 
+
+```js
+function exchange_token(token) {
+ let params = {
+        grant_type: 'authorization_code',
+        code: token,
+        client_id: 'my-client',
+        client_secret: 'client-secret-...', 
+        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
+ }
+ 
+}
+
+```
+
+This function is very simple, it receive a token and build the parameters to be submited in the POST request, now let's write this part with using [Request](https://www.npmjs.com/package/request) library: 
+
+```js
+let request = require('request')
+
+function exchange_token(token, success, error) { 
+ let params = { code: token, /*...* }
+ 
+
+ request({
+    method: 'POST',
+    rejectUnauthorized: false,      // For testing only, this will avoid SSL Authentication.
+    headers: {
+      "content-type": "application/json",
+    },
+    url: 'https://<our-rhsso-instance>/auth/realms/demo-1/protocol/openid-connect/token',
+    form: params,
+ }, function(error, resp, body) { 
+    if(error){
+     console.log('Authentication Error')
+     error(401)
+    }else {
+     console.log('sucess: ', body)
+     success(200)
+    }
+ })
+```
+Beside the ``token`` parameter we also are going to need two more parameter in ``sucess`` and ``error`` they will work as our [function callbacks](https://www.tutorialspoint.com/nodejs/nodejs_callbacks_concept.htm). 
+
+
+Now we can go to our ``/callback`` endpoint: 
+
+```js
+app.get('/callback', (req, res) => {
+    exchange_toke(req.query.code, 
+         success => res.state(sucess).send('<h1> Willkommen! </h1>'),
+         error => res.state(error).send(`<h2> UNAUTHORIZED </h2>`)
+})
+```
+
+We redeploy this and we should have our OAuth2 client up and running. 
+
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-03%20at%2015.10.16.png?raw=true)
+
+
+
+
+
+
+
+
 
 
 
