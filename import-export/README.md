@@ -70,7 +70,7 @@ The easiest way is to use the OpenShift UI console, go to the deployment configu
 
 #### Hard Way 
 
-There is a hard way where you can use ```oc edit`` command it goes as follow: 
+There is a hard way where you can use ``oc edit`` command it goes as follow: 
 
 
 First we need to target the deployment, let said is called ``sso``: 
