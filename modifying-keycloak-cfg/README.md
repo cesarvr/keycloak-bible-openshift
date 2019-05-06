@@ -1,8 +1,8 @@
 ## Configuration Changes At Pre-Startup
 
-In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash this knowledge is lost and it will start again. From the point of view of the users they will lost their session and need to login again.
+In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again. 
 
-One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` property values in the configuration file (like [standalone-openshift.xml]()):
+From the point of view of the users they will lost their session and need to login again. One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` parameter in the configuration file (like [standalone-openshift.xml]()):
 
 ```xml
 
