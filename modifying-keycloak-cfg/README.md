@@ -1,4 +1,4 @@
-## Configuration Changes At Pre-Startup
+## Customizing
 
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again. 
 
