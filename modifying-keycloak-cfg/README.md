@@ -1,5 +1,15 @@
 ## Customizing RHSSO Container
 
+   * Getting Started
+     - [Use Case](#use_case)
+     - [Updating Configuration File](#update)
+     - [Complex Scenarios](#complex)
+     - [RHSSO Configuration File Observations](#observe)
+
+<a name="use_case"/>
+
+### Use Case
+
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again. 
 
 From the point of view of the users they will lost their session and need to login again. One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` [parameter in the configuration](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml#L222):
@@ -14,6 +24,8 @@ From the point of view of the users they will lost their session and need to log
 ```
 
 In this sample we defined ``2`` owners of the session data, improving the resiliency of our cluster against accidents, but there is a catch we are dealing with containers, so making this small update is not trivial.
+
+<a name="update"/>
 
 ### Updating Configuration File
 
@@ -85,6 +97,10 @@ RHSSO image comes with a script that does a lot of tricks to start the server an
 - If you choose to use a Git repository to save your file you can now [implement a Webhook](https://github.com/cesarvr/Openshift#webhook), to trigger an automatic deployment on new updates.
 
 
+
+
+<a name="complex"/>
+
 ### More Complex Scenarios
 
 They are cases where you need to execute more commands to get the work done, like do some pre-process of the configuration template using internal parameters only available to the container at run-time. I those cases I won't recommend the use of ``&&`` ad infinitum, I think a good rule is to keep it below or equal two lines. 
@@ -104,9 +120,9 @@ And put the complicate logic in a maintainable remote script under your control.
 
 
 
+<a name="observe"/>
 
-
-### RHSSO Config File Observations 
+### RHSSO Configuration File Observations 
 
 Early I mentioned that the ``/opt/eap/bin/openshift-launch.sh`` script makes some kind of pre-processing to the ``standalone-openshift.xml`` configuration file, this means that you cannot grab any configuration file and plug it into the container, you may need to copy a version of this file before the container start.
 
