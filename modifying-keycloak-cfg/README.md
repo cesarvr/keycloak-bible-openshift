@@ -103,6 +103,13 @@ And put the complicate logic in a maintainable remote script under your control.
 
 
 
+#### RHSSO Config File Observations 
+
+Early I mentioned that the ``/opt/eap/bin/openshift-launch.sh`` script makes some kind of pre-processing to the ``standalone-openshift.xml`` configuration file, this means that you cannot grab any configuration file and plug it into the container, you may need to copy a version of this file before the container start.
+
+Instead of giving the instruction to retrieve this file before the container execute, I just going to leave the link for a [version here](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml). 
+
+
 
 
 
