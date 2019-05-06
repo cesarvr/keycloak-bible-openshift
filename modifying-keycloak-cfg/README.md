@@ -5,15 +5,12 @@ In OpenShift Keycloak by default support horizontal scaling allowing pods to kee
 From the point of view of the users they will lost their session and need to login again. One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` [parameter in the configuration](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml#L222):
 
 ```xml
-
+...
 <subsystem xmlns="urn:jboss:domain:infinispan:4.0">
    <cache-container name="keycloak" jndi-name="infinispan/Keycloak">
      <distributed-cache name="sessions" mode="SYNC" owners="2"/>
      <distributed-cache name="authenticationSessions" mode="SYNC" owners="2"/>
-     <distributed-cache name="offlineSessions" mode="SYNC" owners="2"/>
-     <distributed-cache name="clientSessions" mode="SYNC" owners="2"/>
-     <distributed-cache name="offlineClientSessions" mode="SYNC" owners="2"/>
-     <distributed-cache name="loginFailures" mode="SYNC" owners="2"/>
+      ...
 ```
 
 In this sample we defined ``2`` owners of the session data, improving the resiliency of our cluster against accidents, but there is a catch we are dealing with containers, so making this small update is not trivial.
