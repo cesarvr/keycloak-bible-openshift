@@ -16,6 +16,8 @@ This guide is about how to configure and run RHSSO with OpenShift.
 - [Importing/Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
     - How to Import/Export RHSSO/Keycloak users in OpenShift. 
   
+- [Modifying Configuration Files](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg) 
+    - An elegant way to change configuration files before the container starts.
   
 ## Diving Deep
 
