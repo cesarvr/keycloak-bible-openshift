@@ -82,7 +82,7 @@ RHSSO image comes with a script that does a lot of tricks to start the server an
 /opt/eap/bin/openshift-launch.sh
 ```
 
-#### What If I Need More Complexity
+### More Complex Scenarios
 
 They are cases where you need to execute more commands to get the work done, like do some pre-process of the configuration template using internal parameters only available to the container at run-time. I those cases I won't recommend the use of ``&&`` ad infinitum, I think a good rule is to keep it below or equal two lines. 
 
@@ -103,7 +103,7 @@ And put the complicate logic in a maintainable remote script under your control.
 
 
 
-#### RHSSO Config File Observations 
+### RHSSO Config File Observations 
 
 Early I mentioned that the ``/opt/eap/bin/openshift-launch.sh`` script makes some kind of pre-processing to the ``standalone-openshift.xml`` configuration file, this means that you cannot grab any configuration file and plug it into the container, you may need to copy a version of this file before the container start.
 
