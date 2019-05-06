@@ -2,7 +2,7 @@
 
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again. 
 
-From the point of view of the users they will lost their session and need to login again. One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` parameter in the configuration file (like [standalone-openshift.xml]()):
+From the point of view of the users they will lost their session and need to login again. One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` [parameter in the configuration](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml#L222):
 
 ```xml
 
@@ -81,6 +81,12 @@ RHSSO image comes with a script that does a lot of tricks to start the server an
 ```sh
 /opt/eap/bin/openshift-launch.sh
 ```
+
+#### Advantages 
+
+- You decouple the configuration file from the container which improve your flexibility for future changes. 
+- If you choose to use a Git repository to save your file you can now [implement a Webhook](https://github.com/cesarvr/Openshift#webhook), to trigger an automatic deployment of new versions.
+
 
 ### More Complex Scenarios
 
