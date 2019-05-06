@@ -79,7 +79,7 @@ First we need to target the deployment, let said is called ``sso``:
  oc edit dc/sso
 ```
 
-Once there we need to go to the spec/containers/volumeMounts section: 
+Once there we need to go to the ```spec/containers/volumeMounts``` section: 
 
 ```xml
 spec:
