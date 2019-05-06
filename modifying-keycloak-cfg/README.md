@@ -81,3 +81,33 @@ RHSSO image comes with a script that does a lot of tricks to start the server an
 ```sh
 /opt/eap/bin/openshift-launch.sh
 ```
+
+#### What If I Nedd More Complexity
+
+They are cases where you need to execute more commands to get the work done, like do some pre-process of the configuration template using internal parameters only available to the container at run-time. I those cases I won't recommend the use of ``&&`` ad infinitum, I think a good rule is to keep it below or equal two lines. 
+
+In those cases you can save the execution script remotely and do something like: 
+
+```xml
+name: sso
+ command:
+ - /bin/sh
+ args:
+ - c
+ - curl -fsSL my-static-server/keycloak/execute.sh
+```
+
+And put the complicate logic in a maintainable remote script under your control. 
+
+
+
+
+
+
+
+
+
+
+
+
+
