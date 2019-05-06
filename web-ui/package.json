@@ -11,7 +11,7 @@
     "license": "ISC",
     "dependencies": {
         "express": "^4.16.4",
-        "okd-runner": "^0.1.9",
+        "okd-runner": "^0.1.12",
         "request": "^2.88.0"
     }
 }
