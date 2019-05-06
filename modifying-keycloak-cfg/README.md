@@ -1,4 +1,4 @@
-## Keycloak Horizontal Scaling
+## Configuration Changes At Pre-Startup
 
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash this knowledge is lost and it will start again. From the point of view of the users they will lost their session and need to login again.
 
@@ -18,7 +18,7 @@ One way to deal with this is to [modify the amount session owners](https://www.k
 
 In this sample we defined ``2`` owners of the session data, improving the resiliency of our cluster against accidents, but there is a catch we are dealing with containers, so making this small update is not trivial.
 
-### Updating Session
+### Updating Configuration File
 
 My first though was to use a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/), but the problem is that this volume mount a Read-Only file system and RH-SSO do some read and write in that folder. By using this method the server will fail to boot up, also I wanted a way to easily update the configuration file.
 
