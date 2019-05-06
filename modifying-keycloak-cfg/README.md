@@ -82,7 +82,7 @@ RHSSO image comes with a script that does a lot of tricks to start the server an
 #### Advantages 
 
 - You decouple the configuration file from the container which improve your flexibility for future changes. 
-- If you choose to use a Git repository to save your file you can now [implement a Webhook](https://github.com/cesarvr/Openshift#webhook), to trigger an automatic deployment of new versions.
+- If you choose to use a Git repository to save your file you can now [implement a Webhook](https://github.com/cesarvr/Openshift#webhook), to trigger an automatic deployment on new updates.
 
 
 ### More Complex Scenarios
