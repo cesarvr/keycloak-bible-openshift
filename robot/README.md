@@ -16,7 +16,7 @@ To test any miss configuration I develop this basic OAuth2 client which requires
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/unsync.gif?raw=true)
 
 
-> In this example obtain the token and then scale our deployment to 3 pods, then we can see that we are having problems getting the token validated as the new instances of RHSSO because of a miss configuration.
+> In this example obtain the token and then scale our deployment to 3 pods, then we can see that we are having problems getting our token validated because the new RHSSO instances are not in sync.
 
 
 ### Install
