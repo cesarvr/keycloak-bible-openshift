@@ -132,7 +132,7 @@ spec:
     command: ['sh', '-c', 'echo Hello World! && sleep 3600']
 ```
 
-More info about this topic [here](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/).
+More about this topic [here](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/).
 
 #### Download & Execute
 
