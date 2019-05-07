@@ -6,6 +6,8 @@
      - [Implementation](#impl)
         - [Downloading Files](#down)
         - [Running Commands Inside The Container](#container)
+        - [Advantages](#adv)
+        - [Running](#run)
      - [Complex Scenarios](#complex)
      - [RHSSO Configuration File Observations](#observe)
 
@@ -17,9 +19,9 @@ In OpenShift Keycloak by default support horizontal scaling allowing pods to kee
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/unsync-counting-down.gif?raw=true)
 
-In this examplle we can observe a case what happen when the RHSSO cluster has only one cache owner, if we scale up we can keep the session for all our users, but if the owner of cache crash or get destroy then all users will get deauthenticated. 
+In this examplle we can observe a case what happen when the RHSSO cluster has only one cache owner, if we scale up we can keep the session for all our users, but if the owner of cache crash or get destroy then all users will get deauthenticated.
 
-For some cases this is not bad, but if you more resillliency against failiures then you need to change the [configuration for session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html): 
+For some cases this is not bad, but if you more resillliency against failiures then you need to change the [configuration for session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html):
 
 ```xml
 ...
@@ -112,19 +114,25 @@ curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.g
 
 ### Running Commands Inside The Container
 
-The majority of container images provided in OpenShift comes with a implicit command to be executed when the image is deployed as a way to hide this complexity from the user, but for this case in particular we want to take control of how this image is executed.
+The majority of container images provided by OpenShift execute a process by default, what we want to do is to execute a custom command.
 
-If you navigate to the section ``spec/containers/`` in the deployment configuration template
+Here is an example of how to run a pod which executes a ``echo hello world!`` inside a ``busybox`` container:
 
 ```xml
-imagePullPolicy: Always
-name: sso
-command:['/bin/sh']
-args:['-c', 'echo Hello World']
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', 'echo Hello World! && sleep 3600']
 ```
 
-If we save this any time OpenShift want to start the container it will execute a ``hello world``.
-
+More info about this topic [here](https://kubernetes.io/docs/concepts/workloads/pods/pod-overview/).
 
 #### Download & Execute
 
@@ -150,8 +158,25 @@ args:['-c', 'curl -o /opt/eap/standalone/configuration/standalone-openshift.xml 
 /opt/eap/bin/openshift-launch.sh']
 ```
 
-Every time now the pod is created it will grab the last version of the configuration file and will execute the ``/op/eap/bin/openshift-launch.sh``, this file comes with the RHSSO image and is a script that takes care of starting up RHSSO main process inside the container.
+Every time now the pod is created it will grab the last version of the configuration file and will execute the ``/op/eap/bin/openshift-launch.sh``.
 
+
+> ``/op/eap/bin/openshift-launch.sh`` script comes bundled with RHSSO image and it takes care of configure/starting up RHSSO main process inside the container.
+
+
+<a name="run"/>
+
+#### Running
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/docs/modifying.gif?raw=true)
+
+
+> In this animation we can see that we are able to scale up and down and our [test-client]() can keep the session.
+
+
+<a name="adv"/>
+
+#### Advantages
 
 Here are some extra advantages of using this approach:
 - You decouple the configuration file from the container which improve your flexibility for future changes.
