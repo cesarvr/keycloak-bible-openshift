@@ -8,9 +8,7 @@
 
 <a name="use_case"/>
 
----------
-
-### Use Case
+## Use Case
 
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again.
 
@@ -32,7 +30,7 @@ Here we bumped the sessions owner to ``2``, this affect the resiliency of our cl
 
 <a name="update"/>
 
----------
+
 
 ## Updating Configuration File
 
@@ -144,7 +142,7 @@ Here are some extra advantages of using this approach:
 - If you choose to use a Git repository to save your file you can now [implement a Webhook](https://github.com/cesarvr/Openshift#webhook) to trigger an automatic deployment on new updates.
 
 
----------
+
 
 <a name="complex"/>
 
