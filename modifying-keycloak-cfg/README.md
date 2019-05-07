@@ -164,8 +164,6 @@ Every time now the pod is created it will grab the last version of the configura
 > ``/op/eap/bin/openshift-launch.sh`` script comes bundled with RHSSO image and it takes care of configure/starting up RHSSO main process inside the container.
 
 
-After we apply the change and save OpenShift automatically will deploy a new version. 
-
 <a name="run"/>
 
 #### Running
