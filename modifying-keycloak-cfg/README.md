@@ -12,7 +12,11 @@
 
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again. 
 
-From the point of view of the users they will lost their session and need to login again. One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` [parameter in the configuration](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml#L222):
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/unsync-counting-down.gif?raw=true)
+
+In this examplle we can observe a case what happen when the RHSSO cluster has only one cache owner, if we scale up we can keep the session for all our users, but if the owner of cache crash we deauthenticate all users. To change this we need to modify the RHSSO configuration. 
+
+One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` [parameter in the RHSSO configuration](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml#L222):
 
 ```xml
 ...
@@ -22,18 +26,19 @@ From the point of view of the users they will lost their session and need to log
      <distributed-cache name="authenticationSessions" mode="SYNC" owners="2"/>
       ...
 ```
-
-In this sample we defined ``2`` owners of the session data, improving the resiliency of our cluster against accidents, but there is a catch we are dealing with containers, so making this small update is not trivial.
+Here we bumped the sessions owner to ``2``, this affect the resiliency of our cluster against accidents, but there is a catch, we are dealing with containers here, so making this small update is not trivial.
 
 <a name="update"/>
 
 ### Updating Configuration File
 
-My first though was to use a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/), but the problem is that this volume mount a Read-Only file system and RH-SSO do some read and write in that folder. By using this method the server will fail to boot up, also I wanted a way to easily update the configuration file.
+My first though was to use a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/), but the problem is that when we mount it as volume it change the permissions of the folder to **read-only**, the problem with this is that RH-SSO do read/write in the configuration folder, and will crash because it won't be able to do its magic there.
 
-My approach for this is to create a maintainable configuration file that will live in some place accessible from the container (like a git repository, internal FTP, CDN, etc) and then modify the pod initialization routine to update the configuration with a copy of this file before starting the container, let's see how we do that.
+Also by using a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) any new change will require to re-create the object again. So my approach for this is to create a maintainable configuration file that will live in some place accessible from the container preferably a **Git repository** (but also an internal FTP or CDN Server will do the job). 
 
-Let's get the [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html):
+Once we got that we can modify the pod initialization routine to grab the configuration file from the git server, place it into the configuration folder and then initiate the process as normal. Let's take do this step by step. 
+
+First we need to get our [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html):
 
 ```sh
 oc get deploymentconfig # or dc for short
@@ -43,7 +48,7 @@ oc get deploymentconfig # or dc for short
 #sso              25         1         1         config,image(redhat-sso72-openshift:1.2)
 ```
 
-We see our [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html) is called ``sso``. Then let's edit this configuration:
+Here our [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html) is called ``sso``. Now we need to edit this configuration:
 
 ```sh
 oc edit sso
