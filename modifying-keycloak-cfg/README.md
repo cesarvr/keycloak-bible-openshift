@@ -207,8 +207,6 @@ name: sso
 And put the complicate logic in a maintainable remote script under your control.
 
 
----------
-
 <a name="observe"/>
 
 ### RHSSO Configuration File Observations
