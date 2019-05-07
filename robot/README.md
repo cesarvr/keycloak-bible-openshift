@@ -1,22 +1,22 @@
-## Testing Keycloak Horizontal Scale
+## Horizontal Scalle Keycloak/Red Hat SSO  
 
-This authenticate an user against Keycloak obtaining a token (by login in) and use it to ping the Keycloak deployment (OpenShift Service), testing all available pods acknowledge the token.
+RHSSO perform a discovery of new pods using the[DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping) which use OpenShift Service to retrive the pods when they become active, meaning that they have pass the [liveness test](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/). 
+
+Once the RHSSO discover surrounding instances then it perform a [synchronization of sessions](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html). 
 
 For more info: 
 
 - [Keycloak caches configuration](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html)
 - [Data replication & Failover](https://www.keycloak.org/docs/3.0/server_installation/topics/cache/replication.html) This basically says, that Keycloak elect an pod to be the owner of the sessions if this pod owning the data crash, then users need to logging again.
 
-
-
-## Keycloak/Red Hat SSO  
-
-Discovery of new pods are done by the use of the [DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping) which use OpenShift Service to retrive the pods in active state. Once the RHSSO discover surrounding instances then it perform a [synchronization of sessions](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html). 
-
-
 ## Testing Horizontal Scaling
 
-This project is an OAuth2 client which require a manual authentication against RHSSO to then perform an automatic token refresh every 1 second against all the pods.  
+To test any miss configuration I develop this basic OAuth2 client which requires to authenticate a client and then perform an automatic token refresh every 1 second against all the pods.  
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/unsync.gif?raw=true)
+
+
+In this example obtain the token and then scale our deployment to 3 pods, then we can see that we are having problems getting the token validated as the new instances of RHSSO because of a miss configuration.
 
 
 ### Install
