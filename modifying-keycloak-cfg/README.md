@@ -2,7 +2,10 @@
 
    * Getting Started
      - [Use Case](#use_case)
-     - [Updating Configuration File](#update)
+     - [How To Update The Configuration File](#update)
+     - [Implementation](#impl)
+        - [Downloading Files](#down)
+        - [Running Commands Inside The Container](#container)
      - [Complex Scenarios](#complex)
      - [RHSSO Configuration File Observations](#observe)
 
@@ -10,13 +13,13 @@
 
 ## Use Case
 
-In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again.
+In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak comes out-of-the-box only with support for **one cache owner** of the data, meaning that only one pod will keep the knowledge of the session for all the pods.
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/unsync-counting-down.gif?raw=true)
 
-In this examplle we can observe a case what happen when the RHSSO cluster has only one cache owner, if we scale up we can keep the session for all our users, but if the owner of cache crash we deauthenticate all users. To change this we need to modify the RHSSO configuration.
+In this examplle we can observe a case what happen when the RHSSO cluster has only one cache owner, if we scale up we can keep the session for all our users, but if the owner of cache crash or get destroy then all users will get deauthenticated. 
 
-One way to deal with this is to [modify the amount session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html), we can do that by modifying the ``distributed-cache`` [parameter in the RHSSO configuration](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/standalone-openshift.xml#L222):
+For some cases this is not bad, but if you more resillliency against failiures then you need to change the [configuration for session owners](https://www.keycloak.org/docs/2.5/server_installation/topics/cache/replication.html): 
 
 ```xml
 ...
@@ -26,14 +29,14 @@ One way to deal with this is to [modify the amount session owners](https://www.k
      <distributed-cache name="authenticationSessions" mode="SYNC" owners="2"/>
       ...
 ```
-Here we bumped the sessions owner to ``2``, this affect the resiliency of our cluster against accidents, but there is a catch, we are dealing with containers here, so making this small update is not trivial.
+
+In OpenShift we are dealing with immutable containers that can get destroyed without notice, so we need to look for a elegant way to apply this change.
 
 <a name="update"/>
 
 
 
-## Updating Configuration File
-
+## How To Update The Configuration File
 
 ### Using ConfigMap
 
@@ -46,6 +49,13 @@ Also by using a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-cont
 So my approach for this is to create a maintainable configuration file that will live in some place accessible from the container preferably a **Git repository** (but also an internal FTP or CDN Server will do the job).
 
 Once we got that we can modify the pod initialization routine to grab the configuration file from the git server, place it into the configuration folder and then initiate the process as normal. Let's take do this step by step.
+
+
+
+<a name="impl"/>
+
+## Implementation
+
 
 First we need to get our [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html):
 
@@ -79,6 +89,10 @@ containers:
 
 This section defines a container named ``sso`` to be deployed by always pulling and image.
 
+
+
+<a name="down"/>
+
 ### Downloading Configuration Files
 
 What we want to do next is to pull the file from our git repository, you can do a ``curl`` like this:
@@ -94,7 +108,9 @@ For this example I'm going to grab the file [from this Github URL](https://raw.g
 curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/standalone-openshift.xml
 ```
 
-#### Running Commands Inside The Container
+<a name="container"/>
+
+### Running Commands Inside The Container
 
 The majority of container images provided in OpenShift comes with a implicit command to be executed when the image is deployed as a way to hide this complexity from the user, but for this case in particular we want to take control of how this image is executed.
 
