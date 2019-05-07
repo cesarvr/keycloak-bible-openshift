@@ -32,12 +32,12 @@ Here we bumped the sessions owner to ``2``, this affect the resiliency of our cl
 
 ### Updating Configuration File
 
-#### Using ConfigMap
+### Using ConfigMap
 My first though was to use a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/), but the problem is that when we mount it as volume it change the permissions of the folder to **read-only**, the problem with this is that RH-SSO do read/write in the configuration folder, and will crash because it won't be able to do its magic there.
 
 Also by using a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) any new change will require to re-create the object again. 
 
-#### Downloading Configuration Before Initialization
+### Downloading Configuration Before Initialization
 
 So my approach for this is to create a maintainable configuration file that will live in some place accessible from the container preferably a **Git repository** (but also an internal FTP or CDN Server will do the job).
 
