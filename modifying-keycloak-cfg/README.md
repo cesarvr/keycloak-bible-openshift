@@ -8,6 +8,8 @@
 
 <a name="use_case"/>
 
+---------
+
 ### Use Case
 
 In OpenShift Keycloak by default support horizontal scaling allowing pods to keep a session. But there is a small problem and is that Keycloak out-of-the-box only support one *owner* of the data, meaning that only one pod will keep the sessions state, if this pod crash the session knowledge is lost and it will start again.
@@ -30,12 +32,16 @@ Here we bumped the sessions owner to ``2``, this affect the resiliency of our cl
 
 <a name="update"/>
 
+---------
+
 ### Updating Configuration File
 
+
 ### Using ConfigMap
+
 My first though was to use a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/), but the problem is that when we mount it as volume it change the permissions of the folder to **read-only**, the problem with this is that RH-SSO do read/write in the configuration folder, and will crash because it won't be able to do its magic there.
 
-Also by using a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) any new change will require to re-create the object again. 
+Also by using a [Config Map](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/) any new change will require to re-create the object again.
 
 ### Downloading Configuration Before Initialization
 
@@ -75,7 +81,7 @@ containers:
 
 This section defines a container named ``sso`` to be deployed by always pulling and image.
 
-#### Downloading Configuration Files
+### Downloading Configuration Files
 
 What we want to do next is to pull the file from our git repository, you can do a ``curl`` like this:
 
@@ -138,7 +144,7 @@ Here are some extra advantages of using this approach:
 - If you choose to use a Git repository to save your file you can now [implement a Webhook](https://github.com/cesarvr/Openshift#webhook) to trigger an automatic deployment on new updates.
 
 
-
+---------
 
 <a name="complex"/>
 
@@ -160,6 +166,7 @@ name: sso
 And put the complicate logic in a maintainable remote script under your control.
 
 
+---------
 
 <a name="observe"/>
 
