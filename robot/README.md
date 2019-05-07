@@ -8,6 +8,17 @@ For more info:
 - [Data replication & Failover](https://www.keycloak.org/docs/3.0/server_installation/topics/cache/replication.html) This basically says, that Keycloak elect an pod to be the owner of the sessions if this pod owning the data crash, then users need to logging again.
 
 
+
+## Keycloak/Red Hat SSO  
+
+Discovery of new pods are done by the use of the [DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping) which use OpenShift Service to retrive the pods in active state. Once the RHSSO discover surrounding instances then it perform a [synchronization of sessions](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html). 
+
+
+## Testing Horizontal Scaling
+
+This project is an OAuth2 client which require a manual authentication against RHSSO to then perform an automatic token refresh every 1 second against all the pods.  
+
+
 ### Install
 
 ```sh
@@ -121,9 +132,6 @@ Run the image
 ```sh
 docker run -it deployer 
 ```
-
- 
-
 
 ## The Hard Way (Using OC) 
 
