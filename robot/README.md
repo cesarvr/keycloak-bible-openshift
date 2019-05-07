@@ -1,6 +1,6 @@
 ## Horizontal Scalle Keycloak/Red Hat SSO  
 
-RHSSO perform a discovery of new pods using the [DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping) which use OpenShift Service to retrive the pods when they become active, meaning that they have pass the [liveness test](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/). 
+RHSSO perform a discovery of new pods using the [DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping) which use OpenShift Service to retrive the pods when they become active by passing the [liveness test](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/). 
 
 Once the RHSSO discover surrounding instances then it perform a [synchronization of sessions](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html). 
 
