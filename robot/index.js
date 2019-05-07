@@ -75,17 +75,20 @@ app.get('/login', (req, res) => {
                  timerID = setInterval( () => {
                      oauth.inspect(access_token).then(({body , status}) => {
                         if(status === 200){
-                            console.log(`\x1b[37m status: \x1b[36m${status}`)
-                            console.log(`\x1b[37m user: \x1b[36m${body.username}`)
-                            console.log(`\x1b[37m user active: \x1b[36m${body.active}`)
-                            console.log(`\n\n\n`)
-                            //console.log('user: ', JSON.stringify(body,null,2))
+                            process.stdout.write(`\x1b[37m HTTP \x1b[36m${status}`)
+                            process.stdout.write(`\x1b[37m user: \x1b[36m${body.username}`)
+                            if(body.active)
+                              process.stdout.write(`\x1b[37m user active: \x1b[36m${body.active}`)
+                            else
+                              process.stdout.write(`\x1b[37m user active: \x1b[31m${body.active}`)
+
+                            process.stdout.write('\n')
                         }else {
                             console.log(' Not working...')
                             console.log('\n\n\n')
                         }
                      }).catch(err => {
-                        console.log(`\x1b[31m Token introspection failiure: ${err}`)
+                        console.log(`\x1b[31m Token introspection failiure: ${JSON.stringify(err, null, 4)}`)
                         console.log(`\x1b[34m Server drop our session, need to re-authenticate`)
                      })
                  }, 2000)

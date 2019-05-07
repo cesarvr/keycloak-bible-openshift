@@ -62,7 +62,6 @@ discovery({sso_url: process.env['SSO']})
 
 function token_introspection (token) {
   let endpoint = store.get().token_introspection_endpoint
-  console.log(`\x1b[37mchecking token: ${endpoint}`)
 
   return new Promise((resolve, reject) => {
     request({
@@ -127,9 +126,6 @@ function exchangeToken(token) {
         }else {
           try{
             let data = {}
-            console.log('response: ok')
-            console.log('headers: ', resp.headers)
-            console.log('body:', body)
             data = JSON.parse(body)
             resolve(data)
           }catch(e) {
