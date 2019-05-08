@@ -8,8 +8,11 @@ let store = function() {
       data = e
     },
     get: () => {
-      if(data === undefined)
+      if(data === undefined){
         throw 'Service not available...'
+        return undefined
+      }
+
       return JSON.parse(data)
     }
   }
