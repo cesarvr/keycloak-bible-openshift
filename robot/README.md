@@ -7,7 +7,7 @@ Once the RHSSO discover surrounding instances then it perform a [synchronization
 For more info: 
 
 - [Keycloak caches configuration](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html)
-- [Data replication & Failover](https://www.keycloak.org/docs/3.0/server_installation/topics/cache/replication.html) This basically says, that Keycloak elect an pod to be the owner of the sessions if this pod owning the data crash, then users need to logging again. For more info on how to improve this default behaviour see [Customizing RHSSO Container](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg).
+- [Data replication & Failover](https://www.keycloak.org/docs/3.0/server_installation/topics/cache/replication.html) This basically say that Keycloak elect an pod to be the owner of the sessions, and if this pod crash then users need to logging again. For more info on how to improve this behaviour see [Customizing RHSSO Container](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg).
 
 ## Testing Horizontal Scaling
 
