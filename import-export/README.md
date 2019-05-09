@@ -39,7 +39,7 @@ Let's assume our Keycloak containers are being deployed by ``my-sso`` deployment
   oc scale dc/my-sso --replicas=1
 ```
 
-### Pushing Export File
+### Creating A ConfigMap
 
 We can now proceed to push the imported json file into the container running Keycloak, let's do this by using a [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-volume).
 
