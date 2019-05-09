@@ -26,7 +26,7 @@ RHSSO implement the concept of cache owners, it basically elect a pod or pods as
 
 By default session owners in Openshift is configure for only 1 owner which in some cases is not enough, if you want to increase this number just [read the Customizing RHSSO Container guide.](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#customizing-rhsso-container)
 
-## Testing Horizontal Scaling
+## Testing
 
 To test any miss configuration I wrote a simple OAuth2 service included in this folder that can be handy to help you test your RHSSO configuration.
 
