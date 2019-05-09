@@ -2,7 +2,7 @@
 
 ### Pod Scaling
 
-In Openshift takes care not only of keeping application alive but it also make sure to distribute the pods across [nodes](), this is not different for RHSSO.
+Openshift takes care not only of keeping application alive but it also make sure to distribute the pods across [nodes](https://docs.openshift.com/enterprise/3.0/architecture/infrastructure_components/kubernetes_infrastructure.html#node), this is not different for RHSSO.
 
 ![high level view](https://github.com/cesarvr/keycloak-examples/blob/master/docs/scaling-pod-up.png?raw=true)
 
