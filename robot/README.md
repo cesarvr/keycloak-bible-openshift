@@ -202,7 +202,7 @@ Finally we expose:
  oc expose svc bot
 ```
 
-## More Info
+## More Info
 
 For more info:
 
