@@ -23,7 +23,7 @@ This guide is about how to configure and run RHSSO with OpenShift.
 - [Testing Deployment](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
    - Simple service to check for configuration errors in RHSSO/Keycloak deployments.
 
-## Diving Deep
+### Diving Deep
 
 - Detailed implementation of OAuth2:
   - [OAuth2 Documentation](https://www.oauth.com/)
