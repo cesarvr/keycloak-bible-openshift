@@ -10,14 +10,18 @@ This guide is about how to configure and run RHSSO with OpenShift.
 - [How To Create An OAuth2 Client](https://github.com/cesarvr/keycloak/tree/master/web-ui)
     - Writing a simple OAuth2 client from scratch, in Node.js.
 
-- [Testing Horizontal Scaling](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
-    - How to use a simple service to check that RHSSO/Keycloak instances are running in domain mode and they share a user session.
+- [Deployment Documentation For Red Hat Single Sign On](https://github.com/cesarvr/keycloak-examples/tree/master/horizontal-scaling)
 
 - [Importing/Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
     - How to Import/Export RHSSO/Keycloak users in OpenShift.
 
 - [Modifying Configuration Files](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg)
     - An elegant way to change configuration files before the container starts.
+
+
+### Tools
+- [Testing Deployment](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
+   - How to use a simple service to check that RHSSO/Keycloak deployment.
 
 ## Diving Deep
 
