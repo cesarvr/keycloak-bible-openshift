@@ -38,7 +38,7 @@ In addition to sessions RHSSO use another layer of storage for persistent data s
 The RHSSO image comes with support out-of-the-box for the following drivers:
  - [MySQL](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.2/html/server_installation_and_configuration_guide/database-1#database_configuration)
  - [PostgreSQL](https://www.postgresql.org/)
- - [MONGO_DB](https://www.mongodb.com/) (Driver is present, but not documented).
+ - [MONGODB](https://www.mongodb.com/) (Driver is present, but not documented).
 
 
 ## More Info
