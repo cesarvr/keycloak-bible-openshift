@@ -2,7 +2,7 @@
 
 To test any miss configuration I wrote a simple OAuth2 service included in this folder that can be handy to help you test your RHSSO configuration.
 
-### Prerequisites
+### Prerequisites
 
 Before we start you need to deploy a RHSSO instance and [configure a user/realm/client](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot).
 
