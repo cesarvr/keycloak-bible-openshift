@@ -1,50 +1,12 @@
-## Horizontal Scale of Keycloak/Red Hat SSO in Openshift
-
-### Pod Scaling
-
-Openshift takes care not only of keeping application alive but it also make sure to distribute the pods across [nodes](https://docs.openshift.com/enterprise/3.0/architecture/infrastructure_components/kubernetes_infrastructure.html#node), this is not different for RHSSO.
-
-![high level view](https://github.com/cesarvr/keycloak-examples/blob/master/docs/scaling-pod-up.png?raw=true)
-
-> Here we see an Openshift configuration with 3 pods evenly distributed across nodes.
-
-Once RHSSO containers are up and running and has pass the [liveness probe check](), they get automatically subscribed to the [Openshift service](https://docs.openshift.com/enterprise/3.0/architecture/core_concepts/pods_and_services.html#services) load balancer table which start directing traffic to them.
-
-![traffic from service](https://github.com/cesarvr/keycloak-examples/blob/master/docs/service-dns.png?raw=true)
-
-> The load balancing is handled by the Openshift service abstraction.  
-
-### Discovery And Caches 
-
-Then RHSSO use a discovery algorithm to locate nearby RRHSSO instance members (pods) by using the [JGroups DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping), this algorithm basically works by fetching a list of active pods from the Openshift service.
-
-Once the RHSSO discover surrounding instances then it perform the [synchronization of sessions, caches. etc.](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html) using JGroups/Inifinispan API's for pod intra-communication.
-
-![sessions](https://github.com/cesarvr/keycloak-examples/blob/master/docs/sessions.png?raw=true)
-
-RHSSO implement the concept of cache owners, it basically elect a pod or pods as the gatekeepers for the state of the session, if this owner crash then users in the system will need to re-authenticate.
-
-By default session owners in Openshift is configure for only 1 owner which in some cases is not enough, if you want to increase this number just [read the Customizing RHSSO Container guide.](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#customizing-rhsso-container)
-
-
-### Persistence
-
-The distributed cache configuration described above works store serves to store session data, other type of information such as realm information require a persistence storage to work. For persitence data RHSSO delegate this to the [Datasource subsystem](https://docs.jboss.org/author/display/WFLY10/DataSource+configuration?_sscc=t) provided by Wildfly server, where theorethically you just need to provide a supported driver. 
-
-
-## Testing Horizontal Scaling
+## Testing Keycloak/Red Hat SSO Deployment in Openshift
 
 To test any miss configuration I wrote a simple OAuth2 service included in this folder that can be handy to help you test your RHSSO configuration.
 
-To work it will require that you configure a user/realm/client and it will take care of generating a token and validate this token across RHSSO instances. Once you got this token you can start playing with ``oc scale`` and check the logs to see how your SSO behaves.
+### Prerequisites
 
-![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/unsync.gif?raw=true)
+Before we start you need to deploy a RHSSO instance and [configure a user/realm/client](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot).
 
-> In this example obtain the token and then scale our deployment to 3 pods and see how we can detect a miss configuration in our RHSSO deployment.
-
-👍 Feel free to collaborate via pull request or opening an [issue](https://github.com/cesarvr/keycloak-examples/issues).
-
-### Install
+### Installing The Service
 
 This service is written in the Node.js:
 
