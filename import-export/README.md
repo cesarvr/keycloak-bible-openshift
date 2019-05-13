@@ -16,13 +16,23 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=<DIR TO EXPORT TO>
 ```
 
-### Import To RHSSO Running In Openshift
+## Import
+
+### New Instance
 
 In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift.
 
+##### Pre-requisites 
+
+- [Openshift CommandLine Client](https://github.com/openshift/origin/releases).
+- Openshift Cluster up and running.
+
+##### Deploying 
 Let's start by deploying a new RHSSO from scratch:
 
 ```sh
+oc login 
+oc project <your-project>
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/deploy/deploy-rhsso-persistent.sh)"
 ```
 
