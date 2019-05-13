@@ -1,29 +1,24 @@
 ## Export
 
-Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state we just need to locate the ``standalone.sh`` script and execute as follows: 
+Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state, we just need to locate the ``standalone.sh`` script and execute: 
 
+To export everything (Realms, users, etc) as a single file:
 
 ```sh
 bin/standalone.sh -Dkeycloak.migration.action=export
--Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/var/tmp/keycloak-data.json
+-Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<path-to-folder>
 ```
 
-This will export all Keycloak resources (realms, user, clients, etc) into a single file, until there everything is fine. But how do we export into a container running in OpenShift. 
-
-
-### External DB
-
-If you have a external database this is as simple as to turn down any running Keycloak pods connected to that DB and execute an external Keycloak connected to this DB: 
+To export everything (Realms, users, etc) as in a folder, generating multiple files:
 
 ```sh
-bin/standalone.sh -c <same-configuration-as-pod> -Dkeycloak.migration.action=import
--Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/var/tmp/keycloak-data.json
--Dkeycloak.migration.strategy=OVERWRITE_EXISTING
-``` 
+bin/standalone.sh -Dkeycloak.migration.action=export
+-Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=<DIR TO EXPORT TO>
+```
 
-If you use the same configuration then this should update the same database and you are set, now you just need to spin up your containers and you are done. In this particular case we are going to obtain a file called ``keycloak-data.json``, now we need to import this data into another Keycloak instance running in OpenShift. 
+### Import To A Containeraized RHSSO 
 
-### Import 
+
 
 ![starting](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/img/begin.gif?raw=true)
 
