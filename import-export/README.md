@@ -134,7 +134,9 @@ We should be able to see our file there.
 
 ### Importing... 
 
-When the [Keycloak image](https://access.redhat.com/containers/?tab=overview#/registry.access.redhat.com/redhat-sso-7/sso73-openshift) runs, it execute a script called ``openshift-launch.sh`` this script basically configures and execute Keycloak inside the container, aside of that it checks for an environment variable called ``SSO_IMPORT_FILE`. 
+When the [Keycloak image](https://access.redhat.com/containers/?tab=overview#/registry.access.redhat.com/redhat-sso-7/sso73-openshift) runs, it execute a script called ``openshift-launch.sh`` this script basically configures and execute Keycloak inside the container. 
+
+It also checks for an environment variable called ``SSO_IMPORT_FILE`` which represent the path where the import file should be located, if the value of this variable is empty it execute the process normally if not then it execute Keycloak import mode. 
 
 ```sh
 ...
@@ -144,6 +146,8 @@ if [ -n "$SSO_IMPORT_FILE" ] && [ -f $SSO_IMPORT_FILE ]; then
 ...
 ...
 ```
+
+> This is the part where ``openshift-launch.sh`` checks for import files.
 
 So let's declare : this environment variable you can go to the dashboard and do it *graphically* or you can also do it using ``oc-client`` like this: 
 
