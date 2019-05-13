@@ -1,3 +1,9 @@
+  - [Export](#use_case)
+  - [Import](#update)
+    - [Deploy](#deploy)
+    - [Mounting File Into RHSSO Container](#mounting)
+    - [Running Container](#running)
+
 ## Export
 
 Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state, we just need to locate the ``standalone.sh`` script and execute:
@@ -16,18 +22,20 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=<DIR TO EXPORT TO>
 ```
 
-## Import
+<a name="import"/>
 
-### New Instance
+## Import
 
 In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift.
 
-##### Pre-requisites 
+##### Pre-requisites
 
 - [Openshift Command-Line Client](https://github.com/openshift/origin/releases).
 - Openshift Cluster up and running.
 
-##### Deploying 
+<a name="deploy"/>
+
+##### Deploying
 Let's start by deploying a new RHSSO from scratch:
 
 ```sh
@@ -35,18 +43,18 @@ Let's start by deploying a new RHSSO from scratch:
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/deploy/deploy-rhsso-persistent.sh)"
 ```
 
-This will deploy a minimal RHSSO with this configuration, [more info](https://github.com/cesarvr/keycloak-examples/blob/master/deploy/deploy-rhsso-persistent.sh).
+This will deploy a minimal RHSSO with this configuration, [more info.](https://github.com/cesarvr/keycloak-examples/blob/master/deploy/deploy-rhsso-persistent.sh)
 
 
-![starting](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/img/begin.gif?raw=true)
+![starting](https://github.com/cesarvr/keycloak-examples/blob/master/docs/deploy-rhsso.gif?raw=true)
 
-> Here is a quick overview of the new instance, there is only one user.
+<a name="scaling_down"/>
 
 ### Scaling Down
 
-Before we do the import make sure that you are running just one replica of Keycloak this way you will avoid problems race conditions.
+Before we import any data we have to make sure that we are running just one replica of Keycloak just to avoid any race conditions.
 
-To scale the pods to one:
+To scale the pods to one we use [oc-scale](https://www.mankier.com/1/oc-scale):
 
 ```sh
   oc scale dc/sso --replicas=1
@@ -55,11 +63,13 @@ To scale the pods to one:
 This change the required replicas for the deployment config named ``sso`` to ``1``.
 
 
-### Creating A ConfigMap
+<a name="mounting"/>
 
-We need to insert the [RHSSO import file](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export) created above inside the container.
+### Mounting File Into RHSSO Container
 
-We can make use of the [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-volume) to map a file into a volume.
+We need to insert the [RHSSO import file](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export) created above inside the container. For that we can use the [ConfigMap](https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#add-configmap-data-to-a-volume), this entity map a set of files into a volume to then we mount it as folder inside the container.
+
+### Creating Volume
 
 Syntax:
 
@@ -77,19 +87,20 @@ Assuming the file we want to export is called ``keycloak-data.json`` and we are 
  # configmap/keycloak-data created
 ```
 
+<a name="running"/>
 
-## Mounting
+### Mounting Volume
 
 Now what we want to do is to mount this ConfigMap as a folder inside the Keycloak container.  
 
-### Easy Way
+#### Easy Way
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/img/mounting_volume.gif?raw=true)
 
 > We first choose the source **keycloak-data**, then we map its content into a folder ``/var/data/`` inside the container, using the **Mount Path** section.
 
 
-### Hard Way
+#### Hard Way
 
 There is a hard way where you can use ``oc edit``:
 
@@ -152,7 +163,7 @@ We should be able to see our file there.
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/img/check_volume.gif?raw=true)
 
 
-### Running Container
+## Running Container
 
 When the [Keycloak image](https://access.redhat.com/containers/?tab=overview#/registry.access.redhat.com/redhat-sso-7/sso73-openshift) runs, it execute a script called ``openshift-launch.sh`` this script basically configures and execute Keycloak inside the container.
 
@@ -192,4 +203,4 @@ This should trigger the creation of a new pod, and this new pod as mentioned bef
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/img/final.gif?raw=true)
 
-> We successfully imported a new realm and a group of users. 
+> We successfully imported a new realm and a group of users.
