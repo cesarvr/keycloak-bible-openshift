@@ -9,7 +9,7 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<path-to-folder>
 ```
 
-To export everything (Realms, users, etc) as in a folder, generating multiple files:
+To export everything (Realms, users, etc) in a folder, generating multiple files:
 
 ```sh
 bin/standalone.sh -Dkeycloak.migration.action=export
