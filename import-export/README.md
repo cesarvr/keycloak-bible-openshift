@@ -24,15 +24,14 @@ In this example we are going to import users and realms from one Keycloak instan
 
 ##### Pre-requisites 
 
-- [Openshift CommandLine Client](https://github.com/openshift/origin/releases).
+- [Openshift Command-Line Client](https://github.com/openshift/origin/releases).
 - Openshift Cluster up and running.
 
 ##### Deploying 
 Let's start by deploying a new RHSSO from scratch:
 
 ```sh
-oc login 
-oc project <your-project>
+## Create instance
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/deploy/deploy-rhsso-persistent.sh)"
 ```
 
