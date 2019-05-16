@@ -166,7 +166,7 @@ To do it manually:
 oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
 ```
 
-We should have a file called ``./export/migrate.json``.
+We should have a file called ``migrate.json`` inside the ``export`` folder if you used the script.
 
 
 ------
@@ -266,7 +266,7 @@ Assuming the file we want to export is called ``keycloak-data.json`` and we are 
 
 ```sh
  oc create configmap keycloak-data \
-    --from-file=kc-export.json
+    --from-file=migrate.json
 
  # configmap/keycloak-data created
 ```
@@ -339,7 +339,7 @@ oc get pod
 #
 
 oc exec your-keycloak-pod -- ls /var/data/
-#kc-export.json
+#migrate.json
 ```
 
 We should be able to see our file there.
@@ -367,7 +367,7 @@ if [ -n "$SSO_IMPORT_FILE" ] && [ -f $SSO_IMPORT_FILE ]; then
 To declare this environment variable you can go to the dashboard or use ``oc-client``:
 
 ```sh
-oc set env dc/sso SSO_IMPORT_FILE=/var/data/kc-export.json
+oc set env dc/sso SSO_IMPORT_FILE=/var/data/migrate.json
 ```
 
 This should trigger the creation of a new pod, and this new pod as mentioned before will proceed to import the data:
@@ -376,7 +376,7 @@ This should trigger the creation of a new pod, and this new pod as mentioned bef
   ...
   ...
 	keycloak.migration.action = import
-	keycloak.migration.file = /var/data/kc-export.json
+	keycloak.migration.file = /var/data/migrate.json
 	keycloak.migration.provider = singleFile
 	keycloak.migration.strategy = IGNORE_EXISTING
 	line.separator =
