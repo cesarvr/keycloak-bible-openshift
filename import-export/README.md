@@ -32,19 +32,64 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 - [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) Openshift Cluster up and running i.e., ``oc login``
 
 
-#### Getting Started 
+#### Getting Started
 
-We are going to use the configuration provided by the RHSSO container to export the information from the DB, to do that we need to scale the pods to 1 first to avoid race conditions: 
+We are going to use the configuration provided by the RHSSO container to export the information from the DB, to do that we need to down scale the pods to 1 to avoid race conditions:
 
 ```sh
   oc scale dc/sso --replicas=1
 ```
 
-Now we are going to temporarily replace the pod initial process so we can work with the container before RHSSO configurations scripts kick in: 
+#### Updating Deployment
 
+Replace the pod initial process, this way we can use start the export process manually, assuming our deployment configuration is called ``sso`` we should do:
 
+```sh
+ oc edit dc/sso
+```
 
+We jump to the section ``spec -> template -> spec -> containers -> first-container``:
 
+```xml
+spec:
+  template:
+    spec:
+      containers:
+        image: image: docker-registry.default.svc:5000/openshift/redhat-sso72-openshift
+      - command:["/bin/sh" , "-c", "sleep 360`0"]
+```
+
+------
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/initial-export.gif?raw=true)
+------
+
+Then trigger a new deployment:
+
+```sh
+ oc rollout latest dc/sso
+```
+
+#### Exporting To File
+
+Now we need to check the new container created by the deployment:
+
+```sh
+oc get pods
+
+#NAME            READY     STATUS    RESTARTS   AGE
+#sso-8-bbb        0/1     Running      0       10sec
+```
+
+Notice the fact that ``READY`` flag is false, this is because the livenessProbe is not detecting the main process, but we can still login into the container as soon as we see the ``Running`` status:
+
+```sh
+oc rsh sso-8-bbb
+# sh-4.2$
+```
+
+Once inside the container we can proceed with the export of data into a single file, this mode is compatible with the automatic import we are going to describe later.
+
+If your container can access to internet you can use this two links:
 
 #### curl
 
@@ -57,6 +102,53 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 sh -c "$(wget https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh -O -)"
 ```
 
+Otherwise you will need to execute this manually:
+
+```sh
+## build configuration file standalone-openShift.xml using container parameters.
+source /opt/eap/bin/launch/openshift-common.sh
+source /opt/eap/bin/launch/logging.sh
+source /opt/eap/bin/launch/configure.sh
+
+## Start RHSSO import mode
+sh /opt/eap/bin/standalone.sh -c standalone-openshift.xml -bmanagement 127.0.0.1 -Dkeycloak.migration.action=export \
+-Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/migrate.json | grep -i export
+```
+
+This will start the RHSSO process in *export* mode, then we can open up a new terminal outside the container and use a script [fetch_from_pod.sh](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/scripts/fetch_from_pod.sh) to stream the export file:
+
+```sh
+#sh scripts/fetch_from_pod <pod-name>
+sh scripts/fetch_from_pod sso-8-bbb
+```
+
+This will do an [RSYNC](https://docs.openshift.com/container-platform/3.9/dev_guide/copy_files_to_container.html) against the container.
+
+To do it manually:
+
+```sh
+
+#oc rsync pod-name:/folder-inside-pod local-folder
+#for more info oc rsync -h
+oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
+```
+
+
+
+------
+#### Example
+
+* Exporting this users
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/users.png?raw=true)
+
+
+
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/full-export.gif?raw=true)
+------
+
+> We start RHSSO in export mode, then we proceed to extract and stream the file with the RHSSO data out of the container.
 
 ## Import
 
