@@ -1,4 +1,8 @@
   - [Export](#use_case)
+    - [From A Container Running In OpenShift](#export) 
+      - [Changing Init Process](#changing)
+      - [Exporting Realms/Users To A File](#export_file)
+      - [Streaming The Export File](#streaming)
   - [Import](#update)
     - [Deploy](#deploy)
     - [Mounting File Into RHSSO Container](#mounting)
@@ -22,7 +26,7 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=<DIR TO EXPORT TO>
 ```
 
-<a name="import"/>
+<a name="export"/>
 
 ### From A Container Running In OpenShift
 
@@ -40,9 +44,12 @@ We are going to use the configuration provided by the RHSSO container to export 
   oc scale dc/sso --replicas=1
 ```
 
-#### Updating Deployment
 
-Replace the pod initial process, this way we can use start the export process manually, assuming our deployment configuration is called ``sso`` we should do:
+<a name="changing"/>
+
+#### Changing Init Process
+
+Replace the pod initial process, this way we can use setup and execute the RHSSO export process manually, assuming our deployment configuration is called ``sso`` we should do:
 
 ```sh
  oc edit dc/sso
@@ -100,7 +107,7 @@ We can now start our export.
 
 <a name="export_file"/>
 
-#### Exporting To A File
+#### Exporting Realms/Users To A File
 
 Now we need to login via ssh in our container we can do this by using [oc-rsh](https://docs.openshift.com/enterprise/3.1/dev_guide/ssh_environment.html):
 
@@ -159,6 +166,7 @@ To do it manually:
 oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
 ```
 
+We should have a file called ``./export/migrate.json``.
 
 
 ------
@@ -174,6 +182,7 @@ oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
 > We start RHSSO in export mode, then we proceed to extract and stream the file with the RHSSO data out of the container.
 ------
 
+<a name="streaming"/>
 
 #### Restoring Deployment 
 
@@ -200,7 +209,7 @@ oc rollout latest dc/sso
 
 ## Import
 
-In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift.
+In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift. We can use the file generated above to do the import in another RHSSO instance.
 
 ##### Pre-Requisites
 
