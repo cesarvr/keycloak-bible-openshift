@@ -24,6 +24,18 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 <a name="import"/>
 
+### From A Container Running In OpenShift
+
+#### curl
+
+```sh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh)"
+```
+#### wget
+
+sh -c "$(wget https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh -O -)"
+
+
 ## Import
 
 In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift.
