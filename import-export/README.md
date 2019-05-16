@@ -55,7 +55,7 @@ spec:
   template:
     spec:
       containers:
-        image: image: docker-registry.default.svc:5000/openshift/redhat-sso72-openshift
+        image: docker-registry.default.svc:5000/openshift/redhat-sso72-openshift
       - command:["/bin/sh" , "-c", "sleep 360`0"]
 ```
 
@@ -141,8 +141,6 @@ oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
 * Exporting this users
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/users.png?raw=true)
-
-
 
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/full-export.gif?raw=true)
