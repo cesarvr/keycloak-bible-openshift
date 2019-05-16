@@ -33,7 +33,9 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 ```
 #### wget
 
+``sh
 sh -c "$(wget https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh -O -)"
+```
 
 
 ## Import
