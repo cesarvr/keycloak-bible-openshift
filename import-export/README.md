@@ -26,6 +26,26 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 ### From A Container Running In OpenShift
 
+##### Pre-requisites
+
+- [Openshift Command-Line Client](https://github.com/openshift/origin/releases).
+- [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) Openshift Cluster up and running i.e., ``oc login``
+
+
+#### Getting Started 
+
+We are going to use the configuration provided by the RHSSO container to export the information from the DB, to do that we need to scale the pods to 1 first to avoid race conditions: 
+
+```sh
+  oc scale dc/sso --replicas=1
+```
+
+Now we are going to temporarily replace the pod initial process so we can work with the container before RHSSO configurations scripts kick in: 
+
+
+
+
+
 #### curl
 
 ```sh
@@ -45,7 +65,8 @@ In this example we are going to import users and realms from one Keycloak instan
 ##### Pre-requisites
 
 - [Openshift Command-Line Client](https://github.com/openshift/origin/releases).
-- Openshift Cluster up and running.
+- [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) Openshift Cluster up and running i.e., ``oc login``.
+
 
 <a name="deploy"/>
 
