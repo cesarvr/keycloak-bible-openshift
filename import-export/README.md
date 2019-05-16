@@ -149,6 +149,29 @@ oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
 ------
 
 
+#### Restoring Deployment 
+
+Last thing left is to restore the deployment configuration to the original state, we run: 
+
+```sh
+oc edit dc/sso
+```
+
+Go to the section ``spec -> template -> spec -> containers -> first-container`` and remove the command parameter:
+
+```xml
+containers:
+  - image: rhsso@...
+```
+
+Then trigger a new deployment: 
+
+```sh
+oc rollout latest dc/sso
+```
+
+![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/final-export.gif?raw=true)
+
 ## Import
 
 In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift.
