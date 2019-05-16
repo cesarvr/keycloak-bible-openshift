@@ -6,16 +6,16 @@
 
 ## Export
 
-Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state, we just need to locate the ``standalone.sh`` script and execute:
+Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state, we just need to locate the ``standalone.sh`` script and apply one of these options:
 
-To export everything (Realms, users, etc) as a single file:
+- To export everything (Realms, users, etc) as a single file:
 
 ```sh
 bin/standalone.sh -Dkeycloak.migration.action=export
 -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<path-to-folder>
 ```
 
-To export everything (Realms, users, etc) in a folder generating multiple files:
+- To export everything (Realms, users, etc) in a folder generating multiple files:
 
 ```sh
 bin/standalone.sh -Dkeycloak.migration.action=export
