@@ -26,10 +26,10 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 ### From A Container Running In OpenShift
 
-##### Pre-requisites
+##### Pre-Requisites
 
-- [Openshift Command-Line Client](https://github.com/openshift/origin/releases).
-- [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) Openshift Cluster up and running i.e., ``oc login``
+- [OpenShift Command-Line Client](https://github.com/openshift/origin/releases).
+- [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) OpenShift Cluster up and running i.e., ``oc login``
 
 
 #### Getting Started
@@ -144,18 +144,19 @@ oc rsync sso-8-bbb:/tmp/migrate.json $HOME/your-folder
 
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/full-export.gif?raw=true)
-------
 
 > We start RHSSO in export mode, then we proceed to extract and stream the file with the RHSSO data out of the container.
+------
+
 
 ## Import
 
 In this example we are going to import users and realms from one Keycloak instance into another running in OpenShift.
 
-##### Pre-requisites
+##### Pre-Requisites
 
-- [Openshift Command-Line Client](https://github.com/openshift/origin/releases).
-- [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) Openshift Cluster up and running i.e., ``oc login``.
+- [OpenShift Command-Line Client](https://github.com/openshift/origin/releases).
+- [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) OpenShift Cluster up and running i.e., ``oc login``.
 
 
 <a name="deploy"/>
