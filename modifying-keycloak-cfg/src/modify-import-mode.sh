@@ -6,12 +6,7 @@ main () {
  curl -o /opt/eap/bin/openshift-launch.sh https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/openshift-launch.sh
 
  # execute launcher
- FILE=/opt/eap/bin/openshift-launch.sh
- if test -f "$FILE"; then
-    echo "$FILE exist"
-
-    sh $FILE
- fi
+ sh /opt/eap/bin/openshift-launch.sh
 }
 
 main 
