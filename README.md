@@ -2,10 +2,12 @@
 
 The best way to get started with Red Hat Single Sign On (RHSSO) is to follow this getting [started guide](https://www.keycloak.org/docs/latest/getting_started/index.html#_install-boot), there you will learn how to setup Keycloak and create realms, users and client.
 
-This guide is about how to configure and run RHSSO with OpenShift.
 
 ## Red Hat Single Sign On  
  > In Openshift
+ 
+This guide is about how to configure and running Red Hat Single Sign On specifically for Openshift.
+ 
   - ### Deployment Configuration
     - [Deployment](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#deployment)
     - [Discovery Process](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#discovery)
