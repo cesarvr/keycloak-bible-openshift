@@ -20,20 +20,22 @@ This guide is about how to configure and run RHSSO with OpenShift.
 
 
 ## Index 
-  - [Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#use_case)
-    - [From Bare Metal](#metal)
-    - [From A Container Running In OpenShift](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export)
-      - [Changing Init Configuration](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#changing)
-      - [Restart Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#redeploy)
-      - [Exporting Realms/Users To A File](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export_file)
-        - [Easy Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#automatic)
-        - [Manual Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#manually)
-      - [Streaming The Export File](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#streaming)
-      - [Restoring Init Configuration](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#restoring-deployment)
-  - [Import](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#update)
-    - [Deploy](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#deploy)
-    - [Mounting File Into RHSSO Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting)
-    - [Running Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#running)
+ ### Red Hat Single Sign On In Openshift
+  - ### Export & Import
+    - [Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#use_case)
+      - [From Bare Metal](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#metal)
+      - [From A Container Running In Openshift](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export)
+        - [Changing Init Configuration](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#changing)
+        - [Restart Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#redeploy)
+        - [Exporting Realms/Users To A File](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export_file)
+          - [Easy Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#automatic)
+          - [Manual Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#manually)
+        - [Streaming The Export File](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#streaming)
+        - [Restoring Init Configuration](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#restoring-deployment)
+    - [Import From A Container Running In Openshift](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#update)
+      - [Deploy](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#deploy)
+      - [Mounting File Into RHSSO Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting)
+      - [Running Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#running)
   - ### Customizing Configuration At Boot 
      - [Use Case](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#use_case)
      - [How To Update The Configuration File](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#update)
