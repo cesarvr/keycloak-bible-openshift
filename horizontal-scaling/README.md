@@ -1,5 +1,3 @@
-## Horizontal Scale of Keycloak/Red Hat SSO in Openshift
-
 ## Deployment
 
 Openshift takes care not only of keeping application alive but it also make sure to distribute the pods across [nodes](https://docs.openshift.com/enterprise/3.0/architecture/infrastructure_components/kubernetes_infrastructure.html#node), this is not different for RHSSO.
