@@ -133,16 +133,14 @@ jboss        1  0.0  0.0  12464  2412 ?        Ss   08:58   0:00   /bin/sh sleep
 
 ### Exporting Realms/Users To A File
 
-
-
-Now we need to login via ssh in our container we can do this by using [oc-rsh](https://docs.openshift.com/enterprise/3.1/dev_guide/ssh_environment.html):
+We have to login via [oc-rsh](https://docs.openshift.com/enterprise/3.1/dev_guide/ssh_environment.html) into our container:
 
 ```sh
 oc rsh sso-8-bbb
 # sh-4.2$
 ```
 
-> Inside the container we can proceed to export of data into a single file, this mode is compatible with the automatic **import** we are going to describe later.
+> Once inside we can start the export process.
 
 If your container can access the internet you run one of this scripts to start the export process:
 
