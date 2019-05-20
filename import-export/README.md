@@ -66,7 +66,11 @@ Replace the container initial process by editing the deployment configuration:
 
 > sso is the name of DeploymentConfig in this example.
 
-Jump into the section ``spec -> template -> spec -> containers -> first-container`` and append this:
+Jump into the section: 
+
+``spec -> template -> spec -> containers -> first-container`` 
+
+And append this:
 
 ```xml
  - command:["/bin/sh" , "-c", "sleep 3600"]
