@@ -4,6 +4,8 @@
       - [Changing Init Configuration](#changing)
       - [Restart Container](#redeploy)
       - [Exporting Realms/Users To A File](#export_file)
+        - [Automatic](#automatic)
+	- [Manually](#manually)
       - [Streaming The Export File](#streaming)
       - [Restoring Init Configuration](#restoring-deployment)
   - [Import](#update)
@@ -142,6 +144,10 @@ oc rsh sso-8-bbb
 
 > Once inside we can start the export process.
 
+<a name="automatic" />
+
+#### Automatic 
+
 If your container has access to the internet, you start the export process automatically by running this script:
 
 ```sh
@@ -149,6 +155,11 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 ```
 
 > This will start the export and save the generated file into ``/tmp/migrate.json``. If this file is to big you may need to mount a [PVC](https://docs.openshift.com/enterprise/3.1/dev_guide/persistent_volumes.html) in this folder.
+
+
+<a name="manually" />
+
+#### Manually 
 
 Otherwise you have to do it manually:
 
