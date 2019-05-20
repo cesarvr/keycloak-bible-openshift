@@ -4,8 +4,8 @@
       - [Changing Init Configuration](#changing)
       - [Restart Container](#redeploy)
       - [Exporting Realms/Users To A File](#export_file)
-        - [Automatic](#automatic)
-        - [Manually](#manually)
+        - [Easy Export](#automatic)
+        - [Manual Export](#manually)
       - [Streaming The Export File](#streaming)
       - [Restoring Init Configuration](#restoring-deployment)
   - [Import](#update)
@@ -146,7 +146,7 @@ oc rsh sso-8-bbb
 
 <a name="automatic" />
 
-#### Automatic 
+#### Easy Export 
 
 If your container has access to the internet, you start the export process automatically by running this script:
 
@@ -159,7 +159,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 
 <a name="manually" />
 
-#### Manually 
+#### Manual Export
 
 Otherwise you have to do it manually:
 
