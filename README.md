@@ -19,6 +19,32 @@ This guide is about how to configure and run RHSSO with OpenShift.
     - Modifying startup configuration of RHSSO.
 
 
+## Index 
+  - [Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#use_case)
+    - [From Bare Metal](#metal)
+    - [From A Container Running In OpenShift](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export)
+      - [Changing Init Configuration](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#changing)
+      - [Restart Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#redeploy)
+      - [Exporting Realms/Users To A File](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export_file)
+        - [Easy Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#automatic)
+        - [Manual Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#manually)
+      - [Streaming The Export File](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#streaming)
+      - [Restoring Init Configuration](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#restoring-deployment)
+  - [Import](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#update)
+    - [Deploy](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#deploy)
+    - [Mounting File Into RHSSO Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting)
+    - [Running Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#running)
+  - ### Customizing Configuration At Boot 
+     - [Use Case](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#use_case)
+     - [How To Update The Configuration File](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#update)
+     - [Implementation](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#impl)
+        - [Downloading Files](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#down)
+        - [Running Commands Inside The Container](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#container)
+        - [Advantages](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#adv)
+        - [Running](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#run)
+     - [Complex Scenarios](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#complex)
+     - [RHSSO Configuration File Observations](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#observe)
+
 ### Tools
 - [Testing Deployment](https://github.com/cesarvr/keycloak-examples/tree/master/robot)
    - Simple service to check for configuration errors in RHSSO/Keycloak deployments.
