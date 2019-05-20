@@ -29,7 +29,7 @@ This guide is about how to configure and run RHSSO with OpenShift.
       - [Deploy](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#deploy)
       - [Mounting File Into RHSSO Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting)
       - [Running Container](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#running)
-  - ### Customizing Configuration At Boot 
+  - ### Customizing Configuration 
      - [Use Case](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#use_case)
      - [How To Update The Configuration File](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#update)
      - [Implementation](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#impl)
