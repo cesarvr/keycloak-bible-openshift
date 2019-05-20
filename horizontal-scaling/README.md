@@ -1,6 +1,6 @@
 ## Horizontal Scale of Keycloak/Red Hat SSO in Openshift
 
-### Pod Scaling
+## Deployment
 
 Openshift takes care not only of keeping application alive but it also make sure to distribute the pods across [nodes](https://docs.openshift.com/enterprise/3.0/architecture/infrastructure_components/kubernetes_infrastructure.html#node), this is not different for RHSSO.
 
@@ -14,13 +14,13 @@ Once RHSSO containers are up and running and has pass the [liveness probe check]
 
 > The load balancing is handled by the Openshift service abstraction.  
 
-### Discovery
+## Discovery
 
 Then RHSSO use a discovery algorithm to locate nearby RRHSSO instance members (pods) by using the [JGroups DNS_PING protocol](http://www.jgroups.org/manual4/index.html#_dns_ping), this algorithm basically works by fetching a list of active pods from the Openshift service.
 
 Once the RHSSO discover surrounding instances then it perform the [synchronization of sessions, caches. etc.](https://www.keycloak.org/docs/3.0/server_installation/topics/cache.html) using JGroups/Inifinispan API's for pod intra-communication.
 
-### Distributed Cache
+## Distributed Cache
 
 ![sessions](https://github.com/cesarvr/keycloak-examples/blob/master/docs/sessions.png?raw=true)
 
@@ -29,7 +29,7 @@ RHSSO implement the concept of cache owners, it basically elect a pod or pods as
 By default session owners in Openshift is configure for only 1 owner which in some cases is not enough, if you want to increase this number just [read the Customizing RHSSO Container guide.](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#customizing-rhsso-container)
 
 
-### Persistence
+## Persistence
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/persistence.png?raw=true)
 
