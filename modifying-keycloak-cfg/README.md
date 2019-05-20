@@ -214,7 +214,7 @@ main () {
 main 
 ```
 
-This is more elegant and still compantible with webhooks for automatic deployment. 
+This is more elegant and still compantible with [Webhook](https://github.com/cesarvr/Openshift#webhook) for automatic deployment. 
 
 
 <a name="observe"/>
