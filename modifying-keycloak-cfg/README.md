@@ -142,7 +142,7 @@ Now that we got the tools let's replace the file and execute RHSSO, for this we 
  imagePullPolicy: Always
  name: sso
  command:['/bin/sh']
- args:['-c', 'curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/standalone-openshift.xml']
+ args:['-c', 'curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/standalone-openshift.xml']
  ```
 
 Here we are using ``curl`` to grab the static file from the Github HTTP server and we place this file into our folder, in a real scenario we change this with ``git clone`` or ``git pull``.
@@ -154,7 +154,7 @@ This will setup the configuration file in place for us, but we still need to exe
 imagePullPolicy: Always
 name: sso
 command:['/bin/sh']
-args:['-c', 'curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/standalone-openshift.xml &&
+args:['-c', 'curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/standalone-openshift.xml &&
 /opt/eap/bin/openshift-launch.sh']
 ```
 
