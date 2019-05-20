@@ -5,7 +5,7 @@
       - [Restart Container](#redeploy)
       - [Exporting Realms/Users To A File](#export_file)
         - [Automatic](#automatic)
-	- [Manually](#manually)
+        - [Manually](#manually)
       - [Streaming The Export File](#streaming)
       - [Restoring Init Configuration](#restoring-deployment)
   - [Import](#update)
