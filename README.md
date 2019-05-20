@@ -19,8 +19,16 @@ This guide is about how to configure and run RHSSO with OpenShift.
     - Modifying startup configuration of RHSSO.
 
 
-## Index 
- ### Red Hat Single Sign On In Openshift
+## Red Hat Single Sign On  
+ > Running In Openshift
+  - ### Deployment Configuration
+    - [Deployment](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#deployment)
+    - [Discovery Process](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#discovery)
+      - Strategies implemented by RHSSO to discover instances running in other nodes/pods.
+    - [Distribute Cache](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#distributed-cache)
+      - Underlaying technology to keep sessions. 
+    - [Persistence](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#persistence)
+      - Supported Database drivers by the container.
   - ### Export & Import
     - [Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#use_case)
       - [From Bare Metal](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#metal)
