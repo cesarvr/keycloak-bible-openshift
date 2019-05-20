@@ -1,8 +1,9 @@
   - [Export](#use_case)
     - [From A Container Running In OpenShift](#export) 
-      - [Changing Init Process](#changing)
+      - [Changing Init Configuration](#changing)
       - [Exporting Realms/Users To A File](#export_file)
       - [Streaming The Export File](#streaming)
+      - [Restoring Init Configuration](#restoring-deployment)
   - [Import](#update)
     - [Deploy](#deploy)
     - [Mounting File Into RHSSO Container](#mounting)
@@ -47,7 +48,7 @@ We are going to use the configuration provided by the RHSSO container to export 
 
 <a name="changing"/>
 
-#### Changing Init Process
+#### Changing Init Configuration
 
 Replace the pod initial process, this way we can use setup and execute the RHSSO export process manually, assuming our deployment configuration is called ``sso`` we should do:
 
