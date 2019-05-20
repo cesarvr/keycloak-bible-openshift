@@ -2,6 +2,7 @@
     - [From Bare Metal](#metal)
     - [From A Container Running In OpenShift](#export)
       - [Changing Init Configuration](#changing)
+      - [Restart Container](#redeploy)
       - [Exporting Realms/Users To A File](#export_file)
       - [Streaming The Export File](#streaming)
       - [Restoring Init Configuration](#restoring-deployment)
@@ -46,7 +47,7 @@ In this guide we are going to modify the booting process of the container, then 
 - [Logged into](https://docs.openshift.com/enterprise/3.2/cli_reference/get_started_cli.html) OpenShift Cluster up and running i.e., ``oc login``
 
 
-#### Getting Started
+### Getting Started
 
 * We can start by scaling down the pods to one to avoid race condition on the DB while exporting:
 
@@ -56,7 +57,7 @@ In this guide we are going to modify the booting process of the container, then 
 
 <a name="changing"/>
 
-#### Changing Init Configuration
+### Changing Init Configuration
 
 Replace the container initial process by editing the deployment configuration:
 
@@ -89,6 +90,9 @@ spec:
 
 > Now instead of running the internal scripts it will pause for 3K seconds, giving us time to perform our export. Feel free to change this time.
 
+<a name="changing"/>
+
+### Restart Container
 
 Then we trigger a new deployment:
 
@@ -127,7 +131,7 @@ jboss        1  0.0  0.0  12464  2412 ?        Ss   08:58   0:00   /bin/sh sleep
 
 <a name="export_file"/>
 
-#### Exporting Realms/Users To A File
+### Exporting Realms/Users To A File
 
 ------
 
@@ -168,7 +172,7 @@ sh /opt/eap/bin/standalone.sh -c standalone-openshift.xml -bmanagement 127.0.0.1
 
 <a name="streaming"/>
 
-#### Streaming The Export File
+### Streaming The Export File
 
 This will start the RHSSO process in *export* mode, then we can open up a new terminal outside the container and use a script [fetch_from_pod.sh](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/scripts/fetch_from_pod.sh) to stream the export file:
 
@@ -206,7 +210,7 @@ We should have a file called ``migrate.json`` inside the ``export`` folder if yo
 
 <a name="streaming"/>
 
-#### Restoring Deployment
+### Restoring Deployment
 
 Last thing left is to restore the deployment configuration to the original state, we run:
 
@@ -241,7 +245,7 @@ In this example we are going to import users and realms from one Keycloak instan
 
 <a name="deploy"/>
 
-##### Deploying
+### Deploying
 Let's start by deploying a new RHSSO from scratch:
 
 ```sh
