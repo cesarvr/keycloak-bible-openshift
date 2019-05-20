@@ -170,7 +170,7 @@ sh /opt/eap/bin/standalone.sh -c standalone-openshift.xml -bmanagement 127.0.0.1
 -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/migrate.json | grep -i export
 ```
 
-> The first three scripts setup some configurations parameters, then we proceed to start the RHSSO in export mode.
+> Here we start the RHSSO in export mode.
 
 <a name="streaming"/>
 
