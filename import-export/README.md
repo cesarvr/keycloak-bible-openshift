@@ -142,18 +142,13 @@ oc rsh sso-8-bbb
 
 > Once inside we can start the export process.
 
-If your container has access to the internet, you start the export process automatically running one of this scripts:
-
-#### using curl
+If your container has access to the internet, you start the export process automatically by running this script:
 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh)"
 ```
-#### using wget
 
-```sh
-sh -c "$(wget https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh -O -)"
-```
+> This will start the export and save the generated file into ``/tmp/migrate.json``. If this file is to big (like a 1TB, you may need to mount a [PVC](https://docs.openshift.com/enterprise/3.1/dev_guide/persistent_volumes.html) for this folder).
 
 Otherwise you have to do it manually:
 
