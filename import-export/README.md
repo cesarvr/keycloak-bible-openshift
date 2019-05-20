@@ -1,5 +1,5 @@
   - [Export](#use_case)
-    - [From A Container Running In OpenShift](#export) 
+    - [From A Container Running In OpenShift](#export)
       - [Changing Init Configuration](#changing)
       - [Exporting Realms/Users To A File](#export_file)
       - [Streaming The Export File](#streaming)
@@ -31,7 +31,9 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 ### From A Container Running In OpenShift
 
-Exporting data from a RHSSO can be as simple as just copying the information of the configuration file (DB connections) of the container, turning down all pods and doing the steps above. But to avoid any inconsistency is better to use the container at the we can take advantage of their immutability.
+Exporting data from a RHSSO can be as simple as just copying the information of the configuration file (DB connections) of the container, turning down all pods and following the steps described above. But to avoid inconsistency is sometimes better to login in the container and perform the export there.
+
+In this guide we are going to change the initial process of the container, login into the container and perform the export. By doing it in this way we will take advantage of the fact that the container has all the configuration we need.
 
 ##### Pre-Requisites
 
@@ -41,24 +43,31 @@ Exporting data from a RHSSO can be as simple as just copying the information of 
 
 #### Getting Started
 
-Let's scale down the pods to one to avoid race condition or DB modifications while exporting:
+We can start by scaling down the pods to one to avoid race condition on the DB while exporting:
 
 ```sh
   oc scale dc/sso --replicas=1
 ```
 
-
 <a name="changing"/>
 
 #### Changing Init Configuration
 
-Replace the pod initial process, this way we can use setup and execute the RHSSO export process manually, assuming our deployment configuration is called ``sso`` we should do:
+Replace the container initial process by editing the deployment configuration:
 
 ```sh
- oc edit dc/sso
+ oc edit dc/sso  
 ```
 
-We jump to the section ``spec -> template -> spec -> containers -> first-container``:
+> sso is the name of DeploymentConfig in this example.
+
+Jump into the section ``spec -> template -> spec -> containers -> first-container`` and append this:
+
+```xml
+ - command:["/bin/sh" , "-c", "sleep 3600"]
+```
+
+Just below the ``image`` field:
 
 ```xml
 spec:
@@ -69,22 +78,18 @@ spec:
       - command:["/bin/sh" , "-c", "sleep 3600"]
 ```
 
-We are going to use this shell command: 
-
-```sh
-sleep 3600
-```
-
-This basically will block a process for a lot of time (3K seconds), enough time to access the container via ssh later. 
+> Now instead of running the internal scripts it will pause for 3K seconds, giving us time to perform our export. Feel free to change this time.
 
 
-Now we should trigger a new deployment, just to make sure we update the outstanding pod:
+Then we trigger a new deployment:
 
 ```sh
  oc rollout latest dc/sso
 ```
 
-Check the new container created by the deployment:
+> This will recreate the containers
+
+Now we should verify the new container:
 
 ```sh
 oc get pods
@@ -93,7 +98,7 @@ oc get pods
 #sso-8-bbb        0/1     Running      0       10sec
 ```
 
-Also check that we successfullly override the container process: 
+And check that we successfully override the container process:
 
 ```sh
  oc exec sso-33-svpx5 -- ps aux
@@ -101,16 +106,21 @@ Also check that we successfullly override the container process:
 jboss        1  0.0  0.0  12464  2412 ?        Ss   08:58   0:00   /bin/sh sleep 3600
 ```
 
-We can now start our export. 
+> This container is using the **sleep** process as the root process (PID 1),  meaning that we have been successful.
 
 
-------
+##### Quick Review
+
+
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/initial-export.gif?raw=true)
+
 ------
 
 <a name="export_file"/>
 
 #### Exporting Realms/Users To A File
+
+------
 
 Now we need to login via ssh in our container we can do this by using [oc-rsh](https://docs.openshift.com/enterprise/3.1/dev_guide/ssh_environment.html):
 
@@ -187,9 +197,9 @@ We should have a file called ``migrate.json`` inside the ``export`` folder if yo
 
 <a name="streaming"/>
 
-#### Restoring Deployment 
+#### Restoring Deployment
 
-Last thing left is to restore the deployment configuration to the original state, we run: 
+Last thing left is to restore the deployment configuration to the original state, we run:
 
 ```sh
 oc edit dc/sso
@@ -202,7 +212,7 @@ containers:
   - image: rhsso@...
 ```
 
-Then trigger a new deployment: 
+Then trigger a new deployment:
 
 ```sh
 oc rollout latest dc/sso
