@@ -4,23 +4,8 @@ The best way to get started with Red Hat Single Sign On (RHSSO) is to follow thi
 
 This guide is about how to configure and run RHSSO with OpenShift.
 
-
-## Guides
-
-- [How To Create An OAuth2 Client](https://github.com/cesarvr/keycloak/tree/master/web-ui)
-    - Step by Step OAuth2 client in Node.js.
-
-- [Deployment Documentation For Red Hat Single Sign On](https://github.com/cesarvr/keycloak-examples/tree/master/horizontal-scaling)
-
-- [Importing/Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export)
-    - How to Import/Export RHSSO/Keycloak users in OpenShift.
-
-- [Modifying Configuration Files](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg)
-    - Modifying startup configuration of RHSSO.
-
-
 ## Red Hat Single Sign On  
- > Running In Openshift
+ > In Openshift
   - ### Deployment Configuration
     - [Deployment](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#deployment)
     - [Discovery Process](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#discovery)
@@ -54,6 +39,9 @@ This guide is about how to configure and run RHSSO with OpenShift.
         - [Running](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#run)
      - [Complex Scenarios](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#complex)
      - [RHSSO Configuration File Observations](https://github.com/cesarvr/keycloak-examples/tree/master/modifying-keycloak-cfg#observe)
+  - ### OAuth2 Integration
+     - [Writing A OAuth2 Client](https://github.com/cesarvr/keycloak/tree/master/web-ui)
+        - Step by Step OAuth2 client in Node.js.
 
 ------
 
