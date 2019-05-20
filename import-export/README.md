@@ -31,6 +31,8 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 ### From A Container Running In OpenShift
 
+Exporting data from a RHSSO can be as simple as just copying the information of the configuration file (DB connections) of the container, turning down all pods and doing the steps above. But to avoid any inconsistency is better to use the container at the we can take advantage of their immutability.
+
 ##### Pre-Requisites
 
 - [OpenShift Command-Line Client](https://github.com/openshift/origin/releases).
@@ -39,7 +41,7 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 #### Getting Started
 
-We are going to use the configuration provided by the RHSSO container to export the information from the DB, to do that we need to down scale the pods to 1 to avoid race conditions:
+Let's scale down the pods to one to avoid race condition or DB modifications while exporting:
 
 ```sh
   oc scale dc/sso --replicas=1
