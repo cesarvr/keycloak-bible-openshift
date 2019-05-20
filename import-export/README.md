@@ -1,4 +1,5 @@
   - [Export](#use_case)
+    - [From Bare Metal](#metal)
     - [From A Container Running In OpenShift](#export)
       - [Changing Init Configuration](#changing)
       - [Exporting Realms/Users To A File](#export_file)
@@ -9,7 +10,11 @@
     - [Mounting File Into RHSSO Container](#mounting)
     - [Running Container](#running)
 
-## Export
+# Export
+
+<a name="metal"/>
+
+## From Bare Metal
 
 Exporting information in Keycloak is *trivial*, as the [documentation](https://www.keycloak.org/docs/2.5/server_admin/topics/export-import.html) state, we just need to locate the ``standalone.sh`` script and apply one of these options:
 
@@ -29,7 +34,7 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 <a name="export"/>
 
-### From A Container Running In OpenShift
+## From A Container Running In OpenShift
 
 Exporting data from RHSSO can be as simple as to copy the configuration file DB connections of one container, turning down all pods connecting to that particular DB and following the steps described above from an external RHSSO instance. But we can also use predictability offered by the container to ease this process.
 
