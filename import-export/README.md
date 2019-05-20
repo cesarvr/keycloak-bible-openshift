@@ -142,9 +142,9 @@ oc rsh sso-8-bbb
 # sh-4.2$
 ```
 
-Inside the container we can proceed to export of data into a single file, this mode is compatible with the automatic **import** we are going to describe later.
+> Inside the container we can proceed to export of data into a single file, this mode is compatible with the automatic **import** we are going to describe later.
 
-If your container can access to internet you can use one of this links:
+If your container can access the internet you run one of this scripts to start the export process:
 
 #### curl
 
@@ -157,7 +157,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 sh -c "$(wget https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh -O -)"
 ```
 
-Otherwise you can do it manually:
+Otherwise you have to do it manually:
 
 ```sh
 ## build configuration file standalone-openShift.xml using container parameters.
@@ -169,6 +169,8 @@ source /opt/eap/bin/launch/configure.sh
 sh /opt/eap/bin/standalone.sh -c standalone-openshift.xml -bmanagement 127.0.0.1 -Dkeycloak.migration.action=export \
 -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/migrate.json | grep -i export
 ```
+
+> The first three scripts setup some configurations parameters, then we proceed to start the RHSSO in export mode.
 
 <a name="streaming"/>
 
