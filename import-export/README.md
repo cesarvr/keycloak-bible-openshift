@@ -142,14 +142,14 @@ oc rsh sso-8-bbb
 
 > Once inside we can start the export process.
 
-If your container can access the internet you run one of this scripts to start the export process:
+If your container has access to the internet, you start the export process automatically running one of this scripts:
 
-#### curl
+#### using curl
 
 ```sh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh)"
 ```
-#### wget
+#### using wget
 
 ```sh
 sh -c "$(wget https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh -O -)"
