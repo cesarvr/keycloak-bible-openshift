@@ -10,8 +10,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.16.4",
-        "okd-runner": "^0.1.12",
+        "express": "^4.17.0",
+        "okd-runner": "^0.2.8",
         "request": "^2.88.0"
     }
 }

@@ -1,18 +1,36 @@
-## OAuth2 Authentication Example
+## Making a OAuth2 Client
 
-This is the most common authentication, in this scenario the user go to your web page and clicks a login button, then the user is redirected to a authorization agent (like Keycloak) for authentication, when he finish the user is redirected back to your webpage with a token.
+Let's first define how a typical OAuth2 workflow looks like, first a user want to access some resource in our server (like a service or webpage), if the user is not registered (doesn't possess a authorization token) then our server should redirect the user to a authorization agent (like Keycloak or RHSSO) where the user provide user and password, the identity server then tells resource server if the user permissions has permission and to what extend.
 
-### Discovery
+In this guide we are going to create a OAuth2 client from scratch, this client will authenticate the user against Red Hat SSO (or Keycloak) to obtain token, then our client can use this token as a key to access various services. 
 
-OAuth2 specify an auto-discovery URL, in Keycloak this URL are basically built in this form:
+
+- [Getting Started](#discovery)
+- [Simple HTTP Server](#simple)
+    - [Running Locally](#rlocal)
+- [Login Against Red Hat SSO](#login)
+    - [User Authorization](#user)
+- [Handling Redirect](#redirect)
+    - [Deploying Our Client Service To OpenShift](#deploy)
+- [Import](#update)
+  - [Deploy](#deploy)
+  - [Mounting File Into RHSSO Container](#mounting)
+  - [Running Container](#running)
+
+
+<a name="discovery"/>
+
+## Getting Started
+
+The OAuth2 standard specify a discovery mechanism to be implemented by the server in a form of a convinient URL in RHSSO the URL looks like this:
 
 ```xml
  https://{Server}:{Port}/auth/realms/<your-realm>/.well-known/openid-configuration
 ```
-This URL will return a list of endpoints required to use OAuth2 authentication:
+
+If we call this URL we get something along this line: 
 
 ```json
-
 {
   "issuer":"https://my-keycloak-server/auth/realms/demo-1",
   "authorization_endpoint":".../auth",
@@ -24,28 +42,35 @@ This URL will return a list of endpoints required to use OAuth2 authentication:
 }
 ```
 
-### Hello World Nodejs
+We are going discuss each of this endpoint does below. 
 
-We can start by making a simple HTTP server using Javascript: 
+
+<a name="simple"/>
+
+## Simple HTTP Server
+
+We can start by making a simple HTTP server using Javascript:
 
 ```sh
  var express = require('express')
  var okd_runner = require('okd-runner')
  var app = express()
- 
+
  app.get('/', (req, res) => res.send('<h1> Hello !</h1>') )
 
  console.log('listening in port 8080')
  app.listen(8080)
 ```
 
-We save this into ``index.js``. 
+We save this into ``index.js``.
 
 
-#### Testing Locally
+<a name="rlocal"/>
+
+### Running Locally
 
 After we save it we need to install two libraries:
- - ``express`` server framework. 
+ - ``express`` server framework.
  - ``okd-runner`` make this application self-deployable to OpenShift.  
 
 ```sh
@@ -59,9 +84,11 @@ node index.js
 # listening in port 8080
 ```
 
-### Login Page
+----
 
-Now that we got our server running let's add a small **login** webpage:  
+## Login Against Red Hat SSO
+
+Our server running let's write a simple *registration page*:  
 
 ```js
 var express = require('express')
@@ -76,7 +103,7 @@ function askForCredentials({URL}) {
                 <title>Hello OAuth2</title>
               </head>
               <body>
-                <h1> Register </h1>
+                <h1> Registration Page </h1>
                 <a href="${URL}">Login</a>
               </body>
             </html>`
@@ -88,26 +115,27 @@ app.get('/', (req, res) => {
 })
 ```
 
-If we run our server again we should see a nice login page. 
+If we run our server again we should see a nice login page.
 
 ![Login Page](https://github.com/cesarvr/keycloak-examples/blob/master/web-ui/docs/login.png?raw=true)
 
+<a name="user"/>
 
+### User Authorization
 
-### Asking For Authorization 
-
-Now we need to delegate the authentication process to RedHat SSO, after all we don't want our service to know anything about this, so we can achieve this by redirecting the user via our **login** page to an especific kecloak endpoint called ``authorization_endpoint``, you can find this endpoint in the [discovery payload](https://github.com/cesarvr/keycloak-examples/tree/master/web-ui#discovery). 
+Now we need to delegate the authentication process to RedHat SSO, so we can achieve this by redirecting the user via our **login** page to an specific RHSSO/Keycloak endpoint called ``authorization_endpoint`` from [discovery payload](https://github.com/cesarvr/keycloak-examples/tree/master/web-ui#discovery).
 
 We need to call this URL like this:
 
-```
- https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/auth?response_type=...
+```xml
+ https://my-keycloak-server/auth/realms/demo-1/protocol/openid-connect/auth
 ```
 
 With this [query parameters](https://en.wikipedia.org/wiki/Query_string):
 
 ```xml
-...auth?response_type=code
+...auth?
+ response_type=code
  &client_id=my-client
  &redirect_uri=https%3A%2F%2Flocalhost%3A666%2F
  &scope=my-scope
@@ -123,10 +151,9 @@ Where:
 
 ![](https://i.stack.imgur.com/IMEhn.png)
 
-> Arterisk (*), means that we accept any URL pattern as redirect URI. 
-
+> Arterisk (*), means that we accept any URL pattern as redirect URI.
 - **scope** - One or more scope values indicating which parts of the user's account you wish to access
-- **state** - A random string generated by your application, which you'll verify later to be sure your service is the initiator of this request. 
+- **state** - A random string generated by your application, which you'll verify later to be sure your service is the initiator of this request.
 
 
 Let's write a function that generate this link for us:
@@ -143,40 +170,52 @@ function buildURL() {
         client_id: 'my-client',
         scope: 'photos',
         state: 'state123',
-        redirect_uri: 'http://localhost:8080'
+        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login`
     })
 
     return `https://my-keycloak-server/auth/realms/${realm}/protocol/openid-connect/auth?${params}`
 }
 ```
 
-This function will craft an URL, so now let's pass this URL to our **login** screen link: 
+We create an object with the followin values: 
+  * ``response_type`` Here we set this value to ``code``, which means we want to start an [authorization request](https://tools.ietf.org/html/rfc6749#section-4.1.1).
+  * ``client_id`` This is should identify a existing client in the SSO server.
+  * ``scope`` In real world situation it should declare the resources our service will access (example ``photos, friends``), Here we are keeping it simple and use an arbitrary one that will be ignored by the SSO server.
+  * ``redirect_uri``  We setup this field with an environment variable ``ROUTE``.  
 
-```sh
+
+This function will craft an URL, so now let's pass this URL to our **login** screen link:
+
+```js
+
 app.get('/', (req, res) => {
   let page = buildLoginPage({ URL:  buildURL() })
   res.send(page)
 })
+
 ```
 
-Now we execute our server again: 
-
-We are going to see our Login page: 
+We reload the server again and see our Login page:
 
 ![Login Page](https://github.com/cesarvr/keycloak-examples/blob/master/web-ui/docs/login.png?raw=true)
 
-But if we click we are going to get redirected to: 
+But if we click we are going to get redirected to:
 
 ![keycloak](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-03%20at%2012.42.30.png?raw=true)
 
-This is the Red Hat SSO login page for this realm. 
+This is the default Red Hat SSO login page for this realm.
 
-## Handling Responses
+-----
 
-Once the user finish the authentication the Keycloak server following the OAuth2 protocol wil use the value of ``redirect_uri`` to call us back, the problem is that this only work is our application is visible, to do that let's assume we have a OpenShift cluster running in the cloud, so let's proceed to deploy our application.
+<a name="redirect"/>
 
+## Handling Redirect
 
-### Deploying To OpenShift
+This guide assume our RHSSO server is running in a cluster in Openshift, if we are testing this in local the SSO server won't be able to redirect back the result to our service because it won't be accessible, so let's fix that by deploying our service into Openshift as well.  
+
+<a name="deploy"/>
+
+### Deploying Our Client Service To OpenShift
 
 To deploy to OpenShift is very simple we just need to add a library called [okd-runner](https://www.npmjs.com/package/okd-runner):
 
@@ -187,106 +226,42 @@ npm install okd-runner --save
 Add the library:
 
 ```js
-let okd = require('okd-runner')
+var okd = require('okd-runner')
+var express = require('express')
+
+var app = express()
+const PORT = 8080
+/*
+ ...
+*/
 ```
 
-That's it, now your applications should know how to deploy itself, now you just need to execute:
+That's it, now our application will deploy itself by just executing the script in a slightly different way:
 
 ```sh
 node index.js --deploy --memory 80
+
+```
+
+Just adding this two flags ``--deploy`` to deploy the application into a container and ``--memory 80`` limiting the container to 80 MB of RAM. 
+
+
+```xml
 ▶ node index.js -c
 Initializing...  ok
 creating objects  ok
 building  ok
 
    URL:  http://web-auth-testing-1.apps.my-openshift-cluster.com
-   ....
-   ....
-   > web-auth@1.0.0 start /opt/app-root/src
-   > node index.js
-
-   listening for request in 8080
+   ...
 ```
-This will handle the hassle for us and will put a container with 80 MB of ram in OpenShift ready to receive traffic.
+This will handle the hassle for us and will configure a container with ``80 MB`` of ram in OpenShift ready to receive traffic.
 
 
-### Configuring Callback
-
-Once your application is deployed you will get back the route URL in this case ``http://web-auth-testing-1.apps.my-openshift-cluster.com`` this is the HTTP access point for our container, we can hit this URL with the browser. Now to configure our service so it send this route as the part of the authentication. 
-
-Let's pick our URL generator function and make the ``redirect_uri`` field adquire this value from the environment variables: 
-
-```js
-function buildURL() {
-    const realm = 'demo-1'
-
-    let params = qs.stringify({
-        response_type: 'code',
-        client_id: 'my-client',
-        scope: 'photos',
-        state: 'state123',
-        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` // <- Here
-    })
-
-    return `https://sso-testing-1.apps.tmagic-5e4a.openshiftworkshop.com/auth/realms/${realm}/protocol/openid-connect/auth?${params}`
-}
-```
-
-To re-deploy our changes we just do: 
 
 
-```sh
-node index.js --deploy --memory 80  
-```
-
-And now we can set that value by navigating the OpenShift Console or using ``oc-client``:
 
 
-```sh
- oc set env deploy web-auth ROUTE=http://web-auth-testing-1.apps.my-openshift-cluster.com/callback
-```
-
-As you might see we are setting a little endpoint ``/callback`` in our URL this is because we still need to manage the response from RH SSO. 
-
-### Handling Callback Data
-
-As mentioned before when the user authenticate against Keycloak, then he will be redirected to our page via ``redirect_uri`` we configure before, our service need to be ready to handle some parameters: 
-
-```sh
-https://$ROUTE/callback?code=AUTH_CODE_HERE&state=1234zyx
-```
-
-- **code**  The server returns the authorization code.
-- **state** The server returns the same state value generated by our service, in this moment we need to validate the state making sure that this state value was generated by us, so we can avoid [man in the middle attack](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) type of attack. 
-
-
-Let's define and endpoint capable of reading this values: 
-
-```js
-app.get('/', (req, res) => {...})
-
-app.get('/callback', (req, res) => {
-    if(req.query.code)
-        //if we got the code we can allow the user to use the service.
-        // This is a good place to implement a redirect, passing the token.  
-        res.send(`<h2> Access token is ${req.query.code} </h2>`)
-    else
-        res.state(401).send(`<h2> UNAUTHORIZED </h2>`)
-})
-```
-
-We redeploy this: 
-
-```sh
-node index --deploy --memory 80
-```
-
-And after we perform authentication against RH SSO we should get something similar to this: 
-
-![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-03%20at%2013.22.44.png?raw=true)
-
-
-This code represents a sort of public key from the user, now we need to take this public key authenticate our client (our service) against RH SSO, if everything went well we get back an access token that we are going to use to access user resources.
 
 
 ### Exchange Token
@@ -299,21 +274,21 @@ The last step is to use this user authorization key we receive in our ``/callbac
 
 > We can obtain this URL by reading the ``token_endpoint`` field in the [discovery payload](https://github.com/cesarvr/keycloak-examples/tree/master/web-ui#discovery).
 
-This **POST** request require the following parameters: 
+This **POST** request require the following parameters:
 
 ```js
  let params = {
         grant_type: 'authorization_code',
         code: token,
         client_id: 'my-client',
-        client_secret: 'a5e98989-afae-45f8-9818-8e6f02eaa2b0', 
-        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
+        client_secret: 'a5e98989-afae-45f8-9818-8e6f02eaa2b0',
+        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login`
     }
 ```
 
 - **auhtorization_code** An authorization grant is a credential representing the resource
    owner's authorization..., [more about authorization grant](https://tools.ietf.org/html/rfc6749#page-8). We use here the ``authorization_code``.
-- **code** The token code we receive in the ``/callback``. 
+- **code** The token code we receive in the ``/callback``.
 - **client_id** - You need to [register a client in RHSSO](https://www.keycloak.org/docs/latest/getting_started/index.html#creating-and-registering-the-client), usually the name of the client is the client ID.
 
 ![](https://www.keycloak.org/docs/latest/getting_started/keycloak-images/clients.png)
@@ -329,13 +304,13 @@ This **POST** request require the following parameters:
 
 To make this **POST** request we are a going to use a Node.js library called [Request](https://www.npmjs.com/package/request) that would take care of the details for us:
 
-We install it doing: 
+We install it doing:
 
 ```sh
 npm install request --save
 ```
 
-Now we write our ``exchange_token`` function by defining the parameters: 
+Now we write our ``exchange_token`` function by defining the parameters:
 
 ```js
 function exchange_token(token) {
@@ -343,22 +318,22 @@ function exchange_token(token) {
         grant_type: 'authorization_code',
         code: token,
         client_id: 'my-client',
-        client_secret: 'client-secret-...', 
-        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login` 
+        client_secret: 'client-secret-...',
+        redirect_uri: `${process.env['ROUTE'] || 'URL_NOT_FOUND'}login`
  }
- 
+
 }
 
 ```
 
-This function is very simple, it receive a token and build the parameters to be submited in the POST request, now let's write this part with using [Request](https://www.npmjs.com/package/request) library: 
+This function is very simple, it receive a token and build the parameters to be submited in the POST request, now let's write this part with using [Request](https://www.npmjs.com/package/request) library:
 
 ```js
 let request = require('request')
 
-function exchange_token(token, success, error) { 
+function exchange_token(token, success, error) {
  let params = { code: token, /*...* }
- 
+
 
  request({
     method: 'POST',
@@ -368,7 +343,7 @@ function exchange_token(token, success, error) {
     },
     url: 'https://<our-rhsso-instance>/auth/realms/demo-1/protocol/openid-connect/token',
     form: params,
- }, function(error, resp, body) { 
+ }, function(error, resp, body) {
     if(error){
      console.log('Authentication Error')
      error(401)
@@ -378,27 +353,27 @@ function exchange_token(token, success, error) {
     }
  })
 ```
-Beside the ``token`` parameter we also are going to need two more parameter in ``sucess`` and ``error`` they will work as our [function callbacks](https://www.tutorialspoint.com/nodejs/nodejs_callbacks_concept.htm). 
+Beside the ``token`` parameter we also are going to need two more parameter in ``sucess`` and ``error`` they will work as our [function callbacks](https://www.tutorialspoint.com/nodejs/nodejs_callbacks_concept.htm).
 
 
-Now we can go to our ``/callback`` endpoint: 
+Now we can go to our ``/callback`` endpoint:
 
 ```js
 app.get('/callback', (req, res) => {
-    exchange_toke(req.query.code, 
+    exchange_toke(req.query.code,
          success => res.state(sucess).send('<h1> Willkommen! </h1>'),
          error => res.state(error).send(`<h2> UNAUTHORIZED </h2>`)
 })
 ```
 
-We redeploy this and we should have our OAuth2 client up and running. 
+We redeploy this and we should have our OAuth2 client up and running.
 
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-03%20at%2015.10.16.png?raw=true)
 
 
 
-If we check the logs we should be able to see something similar to this: 
+If we check the logs we should be able to see something similar to this:
 
 ```sh
 ▶ node index.js -c
@@ -411,18 +386,11 @@ building  ok
    ....
    > web-auth@1.0.0 start /opt/app-root/src
    > node index.js
-   
-   
+
+
 sucess: {
   "access_token":"RsT5OjbzRn430zqMLgV3a...",
   "expires_in":3600
 }
 
 ```
-
-
-
-
-
-
-
