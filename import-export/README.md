@@ -148,7 +148,7 @@ If your container has access to the internet, you start the export process autom
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/import-export/scripts/export.sh)"
 ```
 
-> This will start the export and save the generated file into ``/tmp/migrate.json``. If this file is to big (like a 1TB, you may need to mount a [PVC](https://docs.openshift.com/enterprise/3.1/dev_guide/persistent_volumes.html) for this folder).
+> This will start the export and save the generated file into ``/tmp/migrate.json``. If this file is to big you may need to mount a [PVC](https://docs.openshift.com/enterprise/3.1/dev_guide/persistent_volumes.html) in this folder.
 
 Otherwise you have to do it manually:
 
