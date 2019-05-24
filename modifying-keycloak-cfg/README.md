@@ -189,7 +189,9 @@ Here are some extra advantages of using this approach:
 
 ### More Complex Scenarios
 
-They are cases where you need to execute more commands to get the work done, like do some pre-process or maybe modify another file. Here is an example where we need to download one configuration file, one script file and then run the process: 
+They are cases where you need to execute more commands to get the work done, like do some pre-process or maybe modify another file. 
+
+For those cases we can bundle various actions inside of one script that configure multiple : 
 
 ```xml
 name: sso
