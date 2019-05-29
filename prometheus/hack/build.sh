@@ -13,6 +13,10 @@ curl -L https://github.com/aerogear/keycloak-metrics-spi/archive/master.zip -o m
 unzip master.zip
 
 cd keycloak-metrics-spi-master/
+
+# First execution will fail
+./gradlew jar 
+
 ./gradlew jar --stacktrace
 
 ## Serving 
