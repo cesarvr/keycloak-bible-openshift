@@ -1,4 +1,6 @@
 
+
+echo -e "\e[32m Installing Gradle... \e[39m"
 #Install gradle
 curl -L https://services.gradle.org/distributions/gradle-5.4.1-bin.zip -o gradle.zip
 unzip -d /var/tmp gradle.zip
@@ -8,7 +10,7 @@ export PATH=$PATH:/var/tmp/gradle-5.4.1/bin/
 
 
 ## Building Module
-echo "Building rhsso-spi-plugin"
+echo -e "\e[32m Compiling rhsso-spi-plugin... \e[39m"
 curl -L https://github.com/aerogear/keycloak-metrics-spi/archive/master.zip -o master.zip
 unzip master.zip
 
