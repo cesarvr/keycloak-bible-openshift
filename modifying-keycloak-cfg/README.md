@@ -189,20 +189,34 @@ Here are some extra advantages of using this approach:
 
 ### More Complex Scenarios
 
-They are cases where you need to execute more commands to get the work done, like do some pre-process of the configuration template using internal parameters only available to the container at run-time. I those cases I won't recommend the use of ``&&`` ad infinitum, I think a good rule is to keep it below or equal two lines.
+They are cases where you need to execute more commands to get the work done, like do some pre-process or maybe modify another file. 
 
-In more complex cases, you would prefer to save the execution script remotely and do something like:
+For those cases we can bundle various actions inside of one script that configure multiple : 
 
 ```xml
 name: sso
- command:
- - /bin/sh
- args:
- - c
- - curl -fsSL my-static-server/keycloak/execute.sh
+ image: rhsso@....
+ command: ["/bin/sh", "-c", "curl -sSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/modify-import-mode.sh | sh"]
 ```
 
-And put the complicate logic in a maintainable remote script under your control.
+Here we stream and execute this file: 
+
+```sh
+main () {
+ # copy fresh configuration file
+ curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/standalone-openshift.xml
+
+ # copy modified rhsso launcher
+ curl -o /opt/eap/bin/openshift-launch.sh https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/openshift-launch.sh
+
+ # execute launcher
+ sh /opt/eap/bin/openshift-launch.sh
+}
+
+main 
+```
+
+This is more elegant and still compantible with [Webhook](https://github.com/cesarvr/Openshift#webhook) for automatic deployment. 
 
 
 <a name="observe"/>

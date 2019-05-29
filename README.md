@@ -56,9 +56,12 @@ This guide is about how to configure and running Red Hat Single Sign On specific
 - Detailed implementation of OAuth2:
   - [OAuth2 Documentation](https://www.oauth.com/)
   - [OAuth2 RFC](https://tools.ietf.org/html/rfc6749)
+    - [OAUth2 Best Practices](https://tools.ietf.org/html/draft-ietf-oauth-security-topics-12)
+  
 
 - Keycloak:
   - [Keycloak Documentation](https://www.keycloak.org/docs/2.5/getting_started/index.html)
+  - [Security](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.2/html/server_administration_guide/threat_model_mitigation)
 
 
 - Getting Started With OAuth2:
