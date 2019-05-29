@@ -15,8 +15,10 @@ unzip master.zip
 cd keycloak-metrics-spi-master/
 
 # First execution will fail
-./gradlew jar 
-
+echo "First run"
+./gradlew jar || true
+ 
+echo "build module"
 ./gradlew jar --stacktrace
 
 ## Serving 
