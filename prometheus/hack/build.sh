@@ -24,10 +24,5 @@ echo -e "\e[32m Building... \e[39m"
 
 cd keycloak-metrics-spi-master/
 export GRADLE_OPTS="-Xmx64m -Dorg.gradle.jvmargs='-Xmx256m -XX:MaxPermSize=64m'"
-./gradlew jar
+./gradlew jar -q && cd build/libs/ && python -m SimpleHTTPServer 8080
  
-## Serving 
-echo -e "\e[32m Serving Module... \e[39m"
-
-cd build/libs/
-python -m SimpleHTTPServer 8080
