@@ -24,7 +24,7 @@ const discovery = function({sso_url}) {
 
   let REALM = process.env['REALM']
   let __URL = `https://${sso_url}/auth/realms/${REALM}/.well-known/openid-configuration`
-
+  let timeID = null
   console.log('discovery: ', __URL)
 
   let params = {
@@ -44,9 +44,10 @@ const discovery = function({sso_url}) {
         console.log('trying again...')
 
         // Try every 3 seconds, in case of failiure...
-        setTimeout( () => discovery({sso_url: process.env['SSO']}), 3000)
+        timeID = setTimeout( () => discovery({sso_url: process.env['SSO']}), 3000)
       }else{
         console.log('correct')
+        clearTimeout(timeID)
         store.set(body)
       }
     })

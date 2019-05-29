@@ -76,7 +76,7 @@ app.get('/login', (req, res) => {
                      oauth.inspect(access_token).then(({body , status}) => {
                         if(status === 200){
                             process.stdout.write(`\x1b[37m HTTP \x1b[36m${status}`)
-                            process.stdout.write(`\x1b[37m user: \x1b[36m${body.username}`)
+                            process.stdout.write(`\x1b[37m user: \x1b[36m${ JSON.stringify( body ) }`)
                             if(body.active)
                               process.stdout.write(`\x1b[37m user active: \x1b[36m${body.active}`)
                             else
