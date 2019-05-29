@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: metrics-builder 
   labels:
-    app: metric
+    app: metrics-builder
 spec:
   containers:
   - name: module-cmp 
