@@ -14,13 +14,14 @@ unzip master.zip
 
 cd keycloak-metrics-spi-master/
 
+
+
 # First execution will fail
-echo "First run"
+echo -e "\e[32m Building... \e[39m"
+
+export GRADLE_OPTS="-Xmx64m -Dorg.gradle.jvmargs='-Xmx256m -XX:MaxPermSize=64m'"
 ./gradlew jar || true
  
-echo "build module"
-./gradlew jar --stacktrace
-
 ## Serving 
 echo "serving module"
 
