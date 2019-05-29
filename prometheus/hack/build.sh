@@ -22,7 +22,7 @@ cd keycloak-metrics-spi-master/
 echo -e "\e[32m Building... \e[39m"
 
 export GRADLE_OPTS="-Xmx64m -Dorg.gradle.jvmargs='-Xmx256m -XX:MaxPermSize=64m'"
-./gradlew jar || true
+./gradlew jar
  
 ## Serving 
 echo "serving module"
