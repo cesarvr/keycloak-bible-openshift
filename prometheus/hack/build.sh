@@ -25,7 +25,7 @@ export GRADLE_OPTS="-Xmx64m -Dorg.gradle.jvmargs='-Xmx256m -XX:MaxPermSize=64m'"
 ./gradlew jar
  
 ## Serving 
-echo "serving module"
+echo -e "\e[32m Serving Module... \e[39m"
 
 cd build/libs/
 python -m SimpleHTTPServer 8080
