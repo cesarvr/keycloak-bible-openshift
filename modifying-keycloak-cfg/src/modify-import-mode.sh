@@ -11,7 +11,7 @@ main () {
  # https://github.com/aerogear/keycloak-metrics-spi
  #
  mkdir -p /opt/eap/providers
- curl http://metrics-keycloak.e4ff.pro-eu-west-1.openshiftapps.com/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar
+ curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar
  
 
  # execute launcher
