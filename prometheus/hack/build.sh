@@ -12,9 +12,9 @@ export PATH=$PATH:/var/tmp/gradle-5.4.1/bin/
 ## Building Module
 echo -e "\e[32m Compiling rhsso-spi-plugin... \e[39m"
 curl -L https://github.com/aerogear/keycloak-metrics-spi/archive/master.zip -o master.zip
-unzip -o master.zip
+unzip -o -d $HOME/ master.zip
 
-cd keycloak-metrics-spi-master/
+cd $HOME/keycloak-metrics-spi-master/
 
 
 
