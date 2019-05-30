@@ -3,19 +3,19 @@
 To expose RHSSO/Keycloak metrics to Prometheus we need the [keycloak-metrics-spi](https://github.com/aerogear/keycloak-metrics-spi) plugin, this powerful plugin expose to Prometheus Keycloak/RHSSO events such as logins and errors, and in the other hand you can see observe JVM telemetry data.  
 
 
-## Building Metrics Module
+## Metrics Module
 
 The enterprise way to build this module is to write a Jenkins pipeline job to build the JAR and push it to a repository like Nexus.
 
 ![nexus](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-29%20at%2013.15.57.png?raw=true)
 
-Once we push the JAR file to Nexus we can modify our RHSSO deployment configuration to install this module before as part of the container initialization.
+Once we push the JAR file to Nexus we can modify our RHSSO deployment configuration to install this module via copying over the network or using a ConfigMap.
 
-I personally didn’t have the patience nor the compute resources (almost 4 GB+) to install and configure those two packages. So I came up the creative solution of crafting a container to do this two operations (build & serve) in just 200 MiB.
+I didn’t have the patience to configure Jenkins or the compute resources (almost 4 GB+) to install those two packages. So I just hack a container to encapsulate this two operations (build & serve) in a container, consuming only 200 MiB RAM.
 
 ![hack](https://github.com/cesarvr/keycloak-examples/blob/master/docs/Screenshot%202019-05-29%20at%2013.15.46.png?raw=true)
 
-### Deploy
+### Building The Module
 
 If you want to create the Nexus + Jenkins you can just jump to the install section. To create this **magic container** you need to execute this script:
 
@@ -119,7 +119,14 @@ args: ["mkdir -p /opt/eap/providers",
 Also you can create a [script](https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811) and execute it before runtime:
 
 ```xml
-args: ["curl -sSL https://gist.githubusercontent.com/cesarvr/a8b3e87befacfe80177044549a5a7811/raw/954d51ee6639db8b6160148163f5272d17074d15/run.sh"]
+args: ["curl -sSL https://gist.githubusercontent.com/cesarvr/a8b3e87befacfe80177044549a5a7811/raw/954d51ee6639db8b6160148163f5272d17074d15/run.sh | sh"]
 ```
 
 > In this example we host the script in a [Github Gist](https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811), then we stream and execute.
+
+
+### Why Not Making An Image
+
+The problem of hardcoding a particular module to a custom RHSSO image is doesn't scale well with future changes, take a look at our last example, we can make future modification and apply it to the container.
+
+If we hardcode the configuration inside an image then you will need to remake the image each time configuration change, also this may require an update on the templates in charge of deploying the image.

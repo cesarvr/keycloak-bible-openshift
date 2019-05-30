@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: metrics-builder 
+  name: metrics-builder
   labels:
     app: metrics-builder
 spec:
   containers:
-  - name: module-cmp 
-    image: docker-registry.default.svc:5000/openshift/redhat-openjdk18-openshift:1.2 
+  - name: module-cmp
+    image: docker-registry.default.svc:5000/openshift/redhat-openjdk18-openshift:1.2
     command: ['sh', '-c', 'curl -sSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/prometheus/hack/build.sh | sh']
     ports:
     - containerPort: 8080
-
+    resources:
+      limits:
+        memory: 80Mi
