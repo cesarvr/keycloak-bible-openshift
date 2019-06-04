@@ -16,7 +16,7 @@ This guide is about how to configure and running Red Hat Single Sign On specific
       - Underlaying technology to keep sessions. 
     - [Persistence](https://github.com/cesarvr/keycloak-examples/blob/master/horizontal-scaling/README.md#persistence)
       - Supported Database drivers by the container.
-  - ### Exporting and Importing Users, Realms, Configurations
+  - ### Exporting and Importing
     - [Export](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#use_case)
       - [From Bare Metal](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#metal)
       - [From A Container Running In Openshift](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#export)
