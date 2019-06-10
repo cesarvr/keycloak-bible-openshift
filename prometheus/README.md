@@ -243,11 +243,16 @@ The problem of hardcoding a particular configuration to a docker image is that i
 
 But isolating the deployment steps in a script we get the following advantages:
 
-- **Decoupling** By isolating image creation from image deployment in two separated scripts or in the case of OpenShift just one script for deployment as we did before.
-- **More maintainable** You just write deployment actions.
-- **More options**, You can use a real programming language like Python2/3, if available in the container (like in RHSSO container) instead of using BASH.
-- **Decompose** Brake complex features in different files (if needed), instead of having a huge file.
-- **Automate** Make automatic deployment of new changes via [Webhooks](https://github.com/cesarvr/Openshift#webhook).
+- **Decoupling**
+  - By isolating image creation from image deployment in two separated scripts or in the case of OpenShift just one script for deployment as we did before.
+- **More maintainable** 
+  - You just write deployment actions.
+- **More options** 
+  - Use a real programming language like Python instead of using BASH or Dockerfile.
+- **Decompose** 
+  - Brake complex features in different files (if needed), instead of having a huge file.
+- **Automate** 
+  - Make automatic deployment of new changes via [Webhooks](https://github.com/cesarvr/Openshift#webhook).
 
 
 #### [For a more complex example](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/src/modify-import-mode.sh).
