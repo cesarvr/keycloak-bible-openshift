@@ -60,15 +60,18 @@ In this section we are going export objects from one Keycloak/RHSSO server to an
 
 <a name="changing"/>
 
-### Changing Init Configuration
+### Changing Starting Process
 
 The best way to ensure we export to the right place is to use the configuration packed inside the container, one way to keep this configuration relatively intact is to change the process that brings up the container.  
 
-By default the container runs ``standalone.sh`` script that start RHSSO, we are going to change it so it run ``sleep 3600`` instead, blocking the container container long enough so we can log inside via bash and start the exporting procedure manually.
+By default the container runs a script called ``standalone.sh`` that configures and runs the RHSSO server. To begin the exporting process we need to call this same script but adding ``-Dkeycloak.migration.action=export`` parameter as we see before.
+
+Is more practical to replace the starting process with something like ``sleep 3600``,  login into the container and start the exporting process manually.
+
 
 #### Editing Deployment Configuration
 
-Let's start by redefining the container startup process:
+To modify the starting process we need to edit the deployment configuration, this is the template that defines how the container is created, so we can modify it by using [oc-edit](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html):
 
 ```sh
  oc edit dc/sso  
@@ -76,11 +79,11 @@ Let's start by redefining the container startup process:
 
 > sso is the name of DeploymentConfig in this example.
 
-Jump into the section: 
+Jump into the section:
 
-``spec -> template -> spec -> containers -> first-container`` 
+``spec -> template -> spec -> containers``
 
-And append this:
+Then in the first container add this line:
 
 ```xml
  - command:["/bin/sh" , "-c", "sleep 3600"]
@@ -103,7 +106,7 @@ spec:
 
 ### Restart Container
 
-Then we trigger a new deployment:
+Close the editor and trigger a new deployment:
 
 ```sh
  oc rollout latest dc/sso
@@ -120,15 +123,15 @@ oc get pods
 #sso-8-bbb        0/1     Running      0       10sec
 ```
 
-And check that we successfully override the container process:
+And check the container processes running inside the container using [oc-exec](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html) and Linux ``ps``:
 
 ```sh
- oc exec sso-33-svpx5 -- ps aux
+ oc exec sso-8-bbb -- ps aux
 #USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 jboss        1  0.0  0.0  12464  2412 ?        Ss   08:58   0:00   /bin/sh sleep 3600
 ```
 
-> This container is using the **sleep** process as the root process (PID 1),  meaning that we have been successful.
+> The container shows **sleep** process as the first process (PID 1), this mean that everything went well.
 
 
 ##### Quick Review
@@ -153,7 +156,7 @@ oc rsh sso-8-bbb
 
 <a name="automatic" />
 
-#### Easy Export 
+#### Easy Export
 
 If your container has access to the internet, you start the export process automatically by running this script:
 
@@ -163,6 +166,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 
 > This will start the export and save the generated file into ``/tmp/migrate.json``. If this file is to big you may need to mount a [PVC](https://docs.openshift.com/enterprise/3.1/dev_guide/persistent_volumes.html) in this folder.
 
+Explanation of what this script does can be found in the next section.
 
 <a name="manually" />
 
@@ -171,7 +175,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/cesarvr/keycloak-examples/
 Otherwise you have to do it manually:
 
 ```sh
-## build configuration file standalone-openShift.xml using container parameters.
+## build configuration file (../standalone-openShift.xml) using container parameters.
 source /opt/eap/bin/launch/openshift-common.sh
 source /opt/eap/bin/launch/logging.sh
 source /opt/eap/bin/launch/configure.sh
@@ -187,16 +191,22 @@ sh /opt/eap/bin/standalone.sh -c standalone-openshift.xml -bmanagement 127.0.0.1
 
 ### Streaming The Export File
 
-This will start the RHSSO process in *export* mode, then we can open up a new terminal outside the container and use a script [fetch_from_pod.sh](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/scripts/fetch_from_pod.sh) to stream the export file:
+This will start the RHSSO process in *export* mode and save the file in JSON format inside:
+
+```sh
+ /tmp/migrate.json
+```
+
+This file path is still inside the container, we can stream this file to other host using this script [fetch_from_pod.sh](https://github.com/cesarvr/keycloak-examples/blob/master/import-export/scripts/fetch_from_pod.sh):
 
 ```sh
 #sh scripts/fetch_from_pod <pod-name>
 sh scripts/fetch_from_pod sso-8-bbb
 ```
 
-This will do an [RSYNC](https://docs.openshift.com/container-platform/3.9/dev_guide/copy_files_to_container.html) against the container.
+> This will do an [RSYNC](https://docs.openshift.com/container-platform/3.9/dev_guide/copy_files_to_container.html) against the container and will stream the file back to your localhost.
 
-To do it manually:
+You can also do it manually:
 
 ```sh
 
@@ -235,7 +245,10 @@ Go to the section ``spec -> template -> spec -> containers -> first-container`` 
 
 ```xml
 containers:
+    ...
   - image: rhsso@...
+    command: # delete this line...
+    ...
 ```
 
 Then trigger a new deployment:
