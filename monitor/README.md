@@ -14,11 +14,11 @@
 
 ### Auditing
 
-![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/events.png?raw=true)
+One of the features of Keycloak/RHSSO is the audit console which offers a convenient way to see the transactions in the identity server.
+
+<img align="center" src="https://github.com/cesarvr/keycloak-examples/blob/master/docs/events.png?raw=true" width="500">
 
 > RHSSO events console.
-
-One of the features of Keycloak/RHSSO is the audit console which offers a convenient way to see the transactions in the identity server.
 
 In this console you can monitor and see what's happening inside your identity provider like token errors, invalid login attempt, invalid clients, etc. This console is perfect to detect failures or suspicious activities. 
 
