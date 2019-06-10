@@ -154,61 +154,55 @@ containers:
   ...
 ```
 
-Just below command we are going to add a new field ``args`` wich is an array of sequential operations we want the container to perform in order:
-
-First create a ``providers`` folder:
+Then just add a new ``args`` field just below that with the followin content: 
 
 ```xml
-...
-command: ["/bin/sh", "-c"]
-args: ["mkdir -p /opt/eap/providers"]
-```
-
-> The first action is to create the folder.
-
-
-Download the JAR binary file:
-
-```xml
-...
-command: ["/bin/sh", "-c"]
-args: ["mkdir -p /opt/eap/providers",
-       "curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar"]
-```
-
-Launch RHSSO main process ``openshift-launch.sh``:
-
-```xml
-...
-command: ["/bin/sh", "-c"]
-args: ["mkdir -p /opt/eap/providers",
-       "curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar",
-       "sh /opt/eap/bin/openshift-launch.sh"]
-```
-
-### More Elegant Approach
-
-Also you consolidate all those ugly lines into one elegant [script](https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811) and replace those ``args`` entry with this one liner:
-
-```xml
-args: ["curl -sSL https://gist.githubusercontent.com/cesarvr/a8b3e87befacfe80177044549a5a7811/raw/954d51ee6639db8b6160148163f5272d17074d15/run.sh | sh"]
+  ...
+  image: rhsso@...
+  command: ["/bin/sh", "-c"]
+  args: ["curl -sSL https://gist.githubusercontent.com/cesarvr/a8b3e87befacfe80177044549a5a7811/raw/954d51ee6639db8b6160148163f5272d17074d15/run.sh | sh"]
+  ...
 ```
 
 > In this example we host the script in a [Github Gist](https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811), then we stream and execute.
 
-This script can be stored and maintained inside in your own self-served git repository like [Gogs](https://gogs.io/) running on your premises. And guess what OpenShift will make that is always available.
+This script does the following: 
+
+- It creates the providers folder ``/opt/eap/providers``.
+- Download the compiled module from Metrics Builder container created above. 
+- Execute the RHSSO process.
+
+### Using Internal Repository
+
+If you don't want this script to be stored publicly you can store it in your own self-served git repository like [Gogs](https://gogs.io/) running on your OpenShift cluster.
+
+### Hard Way
+
+If you don't have the luxury of having access to a Git repository, you can hardcode those instructions like this: 
+
+```xml
+ image: rhsso@...
+  command: ["/bin/sh", "-c"]
+  args: [
+    "mkdir -p /opt/eap/providers",
+    "curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar",
+    "sh /opt/eap/bin/openshift-launch.sh"
+  ]
+  ...
+```
+> Use this method just for learning purposes. 
 
 
 <a name="configmap"/>
 
 ### Alternative Using ConfigMaps
 
-Another way to inject the module into the RHSSO container is to build the binary JAR file and save it inside a [ConfigMap](https://docs.openshift.com/enterprise/3.2/dev_guide/configmaps.html).
+Another way to inject this module into the RHSSO container is to build the binary JAR file using the Jenkins pipeline method and save it inside a [ConfigMap](https://docs.openshift.com/enterprise/3.2/dev_guide/configmaps.html).
 
 Then we just need to mount the [ConfigMap](https://docs.openshift.com/enterprise/3.2/dev_guide/configmaps.html) inside the RHSSO container.
 
 
-> For more information on how to create and mount a ConfigMap [follow this example](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting-file-into-rhsso-container).
+> For more instructions on how to create and mount a ConfigMap [follow this example](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting-file-into-rhsso-container).
 
 <a name="expose"/>
 
@@ -220,8 +214,9 @@ Now you we just need to rollout a new deployment:
 oc rollout latest dc/sso
 #deploymentconfig.apps.openshift.io/sso rolled out
 ```
+> Basically we create new container that will execute [our deployment script]((https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811)).
 
-Once you restart you need to login into RHSSO/Keycloak, go to the ``Master`` realm, Events section, Config and select the metrics module should appear in the [Events Listener](Event Listener SPI) field.
+Once the container is deployed, you can now go to the ``Master`` realm, Events section, Config and select the metrics module should appear in the [Events Listener](Event Listener SPI) field.
 
 ### Quick Tour
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/module-install.gif?raw=true)
