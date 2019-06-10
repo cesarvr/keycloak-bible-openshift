@@ -39,7 +39,7 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 ## From A Container Running In OpenShift
 
-In this section we are going export objects from one Keycloak/RHSSO server to another running inside the container, by modifying the starting up process of the SSO container.
+In this section we are going export objects from one Keycloak/RHSSO server to another running inside the container.
 
 ##### Pre-Requisites
 
@@ -62,9 +62,9 @@ In this section we are going export objects from one Keycloak/RHSSO server to an
 
 ### Changing Init Configuration
 
-The best way to ensure we export to the right place is to adopt the configuration packed into the container, one way to achieve this is to reuse the container by modifying the containers starting process. 
+The best way to ensure we export to the right place is to use the configuration packed inside the container, one way to keep this configuration relatively intact is to change the process that brings up the container.  
 
-Until this moment the container is implicitly running by default the ``standalone.sh`` script. we are going to change that so it runs ``sleep 3600``, this will start the container and keep it stuck so we can loging into the container via bash and start the **export**.
+By default the container runs ``standalone.sh`` script that start RHSSO, we are going to change it so it run ``sleep 3600`` instead, blocking the container container long enough so we can log inside via bash and start the exporting procedure manually.
 
 #### Editing Deployment Configuration
 
