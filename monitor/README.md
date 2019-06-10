@@ -6,7 +6,7 @@
   - [Building The Metrics Module](#EE)
     - [Enterprise Way](#building)
     - [Like Wozniak](#hacker)
-  - [Install](#install)
+  - [Installing The Module](#install)
     - [Using ConfigMaps](#configmap)
   - [Exposing Metrics](#expose)
   - [Why Not Making An Image Instead ?](#dockerfile)
@@ -113,7 +113,7 @@ Last-Modified: Thu, 30 May 2019 15:25:16 GMT
 
 <a name="install"/>
 
-### Install
+## Installing The Module
 
 By now we should have access to a server storing our binary, being Nexus or the Metric Builder container. 
 
@@ -121,8 +121,7 @@ Now the next step is to download the module from one of this servers and place i
 
 > If the providers folder is not there you need to create it.
 
-#### Changing Deployment Rules
-
+### Changing Deployment Rules
 
 We need to specify some new steps before the SSO gets up and running, the best place to define this rules is the deployment configuration.
 
@@ -187,7 +186,7 @@ args: ["mkdir -p /opt/eap/providers",
        "sh /opt/eap/bin/openshift-launch.sh"]
 ```
 
-#### More Elegant
+### More Elegant Approach
 
 Also you consolidate all those ugly lines into one elegant [script](https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811) and replace those ``args`` entry with this one liner:
 
@@ -202,7 +201,7 @@ This script can be stored and maintained inside in your own self-served git repo
 
 <a name="configmap"/>
 
-#### Another Option
+### Alternative Using ConfigMaps
 
 Another way to inject the module into the RHSSO container is to build the binary JAR file and save it inside a [ConfigMap](https://docs.openshift.com/enterprise/3.2/dev_guide/configmaps.html).
 
@@ -213,7 +212,7 @@ Then we just need to mount the [ConfigMap](https://docs.openshift.com/enterprise
 
 <a name="expose"/>
 
-### Exposing Metrics
+## Exposing Metrics
 
 Now you we just need to rollout a new deployment:
 
@@ -224,7 +223,7 @@ oc rollout latest dc/sso
 
 Once you restart you need to login into RHSSO/Keycloak, go to the ``Master`` realm, Events section, Config and select the metrics module should appear in the [Events Listener](Event Listener SPI) field.
 
-#### Quick Tour
+### Quick Tour
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/module-install.gif?raw=true)
 
 ----------
@@ -250,7 +249,7 @@ curl https://my-rhsso-server.com/auth/realms/master/metrics | grep memory
 
 <a name="dockerfile"/>
 
-### Why Not Making An Image Instead ?
+## Why Not Making An Image Instead ?
 
 The problem of hardcoding a particular configuration to a docker image is that it usually doesn't scale well with future changes, meaning that your ``Dockerfile`` will grow in size and complexity.
 
@@ -268,7 +267,7 @@ But isolating the deployment steps in a script we get the following advantages:
   - Make automatic deployment of new changes via [Webhooks](https://github.com/cesarvr/Openshift#webhook).
 
 
-#### [For a more complex example](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/src/modify-import-mode.sh).
+### [For a more complex example](https://github.com/cesarvr/keycloak-examples/blob/master/modifying-keycloak-cfg/src/modify-import-mode.sh).
 
 In that example the script does:
 
