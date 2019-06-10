@@ -244,7 +244,7 @@ The problem of hardcoding a particular configuration to a docker image is that i
 But isolating the deployment steps in a script we get the following advantages:
 
 - **Decoupling**
-  - By isolating image creation from image deployment in two separated scripts or in the case of OpenShift just one script for deployment as we did before.
+  - By isolating image creation from the actions after deployment.
 - **More maintainable** 
   - You just write deployment actions.
 - **More options** 
