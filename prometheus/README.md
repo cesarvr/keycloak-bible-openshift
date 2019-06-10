@@ -44,7 +44,7 @@ This guide assumes that you have Keycloak/RHSSO and Prometheus running in your O
 
 <a name="EE"/>
 
-#### Enterprise Way
+#### Enterprise Way
 
 The enterprise way to build this module is to write a [OpenShift Jenkins pipeline job](https://github.com/cesarvr/Spring-Boot), then we push the compiled binary JAR into a repository like Nexus.
 
@@ -174,7 +174,7 @@ args: ["mkdir -p /opt/eap/providers",
        "sh /opt/eap/bin/openshift-launch.sh"]
 ```
 
-#### More Elegant
+#### More Elegant
 
 Also you consolidate all those ugly lines into one elegant [script](https://gist.github.com/cesarvr/a8b3e87befacfe80177044549a5a7811) and replace those ``args`` entry with this one liner:
 
@@ -211,7 +211,7 @@ oc rollout latest dc/sso
 
 Once you restart you need to login into RHSSO/Keycloak, go to the ``Master`` realm, Events section, Config and select the metrics module should appear in the [Events Listener](Event Listener SPI) field.
 
-#### Quick Tour
+#### Quick Tour
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/module-install.gif?raw=true)
 
 ----------
