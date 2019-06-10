@@ -39,9 +39,7 @@ bin/standalone.sh -Dkeycloak.migration.action=export
 
 ## From A Container Running In OpenShift
 
-Exporting data from RHSSO can be as simple as to copy the configuration file DB connections of one container, turning down all pods connecting to that particular DB and following the steps described above from an external RHSSO instance. But we can also use predictability offered by the container to ease this process.
-
-In this guide we are going to modify the booting process of the container, then we are going to login, perform the export and restore the continer starting routine. 
+In this section we are going export objects from one Keycloak/RHSSO server to another running inside the container, by modifying the starting up process of the SSO container.
 
 ##### Pre-Requisites
 
@@ -51,17 +49,26 @@ In this guide we are going to modify the booting process of the container, then 
 
 ### Getting Started
 
-* We can start by scaling down the pods to one to avoid race condition on the DB while exporting:
+* We can start by scaling down the pods to only one:
 
 ```sh
   oc scale dc/sso --replicas=1
 ```
 
+> This way we can avoid race conditions.
+
+
 <a name="changing"/>
 
 ### Changing Init Configuration
 
-Replace the container initial process by editing the deployment configuration:
+The best way to ensure we export to the right place is to adopt the configuration packed into the container, one way to achieve this is to reuse the container by modifying the containers starting process. 
+
+Until this moment the container is implicitly running by default the ``standalone.sh`` script, we are going to change that with ``sleep 3600``. That way we can access the container via bash and start the exporting process manually.
+
+#### Editing Deployment Configuration
+
+Let's start by redefining the container startup process:
 
 ```sh
  oc edit dc/sso  
