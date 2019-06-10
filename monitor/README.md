@@ -115,30 +115,38 @@ Last-Modified: Thu, 30 May 2019 15:25:16 GMT
 
 ### Install
 
-The last step is to install the module, to do this first we need to download it from our two options the **metrics-builder** or **Nexus Repository** and then place the binary inside Wildfly/JBoss ``providers`` folder:
+By now we should have access to a server storing our binary, being Nexus or the Metric Builder container. Now the next step is to download the module from one of this servers and place it inside the SSO container into the ``$JBOSS_HOME/providers/`` folder:
 
 ```sh
-$JBOSS_HOME/providers/
-#or
 /opt/eap/providers/
 ```
-
 > If the providers folder is not there you need to create it.
 
+#### Changing Deployment Rules
 
-We have to this just before the containers start, so let's edit the containers start routine in the deployment configuration:  
+
+We need to specify some new steps before the SSO gets up and running, the best place to define this rules is the deployment configuration.
+
+Let's customize our deployment configuration: 
+
 
 ```sh
 ## Get the Deployment Config
 oc get dc/sso
+
 # NAME             REVISION   DESIRED   CURRENT   TRIGGERED BY
 # sso              49         1         1          …
+```
+> Retrieve the [DeploymentConfig](https://docs.openshift.com/enterprise/3.0/dev_guide/deployments.html)
 
+Modify it using [oc-edit](https://docs.openshift.com/enterprise/3.0/cli_reference/basic_cli_operations.html): 
+
+```sh 
 ## Modify
 oc edit dc/sso
 ```
 
-Go to the section ``containers > image`` section, then add a ``command`` field:
+Navigate through the template to the section ``containers > image`` section, then add a ``command`` field:
 
 ```xml
 containers:
