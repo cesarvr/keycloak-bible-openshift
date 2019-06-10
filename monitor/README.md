@@ -161,6 +161,8 @@ Just below command we are going to add a new field ``args`` wich is an array of 
 First create a ``providers`` folder:
 
 ```xml
+...
+command: ["/bin/sh", "-c"]
 args: ["mkdir -p /opt/eap/providers"]
 ```
 
@@ -170,6 +172,8 @@ args: ["mkdir -p /opt/eap/providers"]
 Download the JAR binary file:
 
 ```xml
+...
+command: ["/bin/sh", "-c"]
 args: ["mkdir -p /opt/eap/providers",
        "curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar"]
 ```
@@ -177,6 +181,8 @@ args: ["mkdir -p /opt/eap/providers",
 Launch RHSSO main process ``openshift-launch.sh``:
 
 ```xml
+...
+command: ["/bin/sh", "-c"]
 args: ["mkdir -p /opt/eap/providers",
        "curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar",
        "sh /opt/eap/bin/openshift-launch.sh"]
