@@ -115,11 +115,10 @@ Last-Modified: Thu, 30 May 2019 15:25:16 GMT
 
 ### Install
 
-By now we should have access to a server storing our binary, being Nexus or the Metric Builder container. Now the next step is to download the module from one of this servers and place it inside the SSO container into the ``$JBOSS_HOME/providers/`` folder:
+By now we should have access to a server storing our binary, being Nexus or the Metric Builder container. 
 
-```sh
-/opt/eap/providers/
-```
+Now the next step is to download the module from one of this servers and place it inside the SSO container into the ``$JBOSS_HOME/providers/`` folder.
+
 > If the providers folder is not there you need to create it.
 
 #### Changing Deployment Rules
