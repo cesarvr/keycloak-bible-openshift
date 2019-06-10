@@ -11,7 +11,7 @@
       - [Why Not Making An Image Instead ?](#dockerfile)
 
 
-<a name="#audit"/>
+<a name="audit"/>
 
 ## Auditing and Events
 
@@ -23,7 +23,7 @@ One of features of Keycloak/RHSSO is the audit console which offers a convenient
 
 In this console you can setup email alerts that trigger under certain circumstances like login errors.
 
-<a name="#prometheus"/>
+<a name="prometheus"/>
 
 ## Using Prometheus
 
@@ -31,17 +31,17 @@ In this guide we are going to discuss how we can expose those [SSO Events](https
 
 To do this we just need to install the [keycloak-metrics-spi plugin](https://github.com/aerogear/keycloak-metrics-spi) which basically expose this information through the ``/metrics`` endpoint.
 
-<a name="#req"/>
+<a name="req"/>
 
 ### Requirements
 
 This guide assumes that you have Keycloak/RHSSO and Prometheus running in your OpenShift cluster.
 
-<a name="#building"/>
+<a name="building"/>
 
 ### Building The Metrics Module
 
-<a name="#EE"/>
+<a name="EE"/>
 
 #### Enterprise Way
 
@@ -52,7 +52,7 @@ The enterprise way to build this module is to write a [OpenShift Jenkins pipelin
 Then we make some modification into the RHSSO container to grab and install the module, if you prefer to build the module using this way you can jump to the [install section](##install).
 
 
-<a name="#hacker"/>
+<a name="hacker"/>
 
 #### Hackers Way
 
@@ -110,7 +110,7 @@ Last-Modified: Thu, 30 May 2019 15:25:16 GMT
 
 
 
-<a name="#install"/>
+<a name="install"/>
 
 ### Install
 
@@ -186,7 +186,7 @@ args: ["curl -sSL https://gist.githubusercontent.com/cesarvr/a8b3e87befacfe80177
 This script can be stored and maintained inside in your own self-served git repository like [Gogs](https://gogs.io/) running on your premises. And guess what OpenShift will make that is always available.
 
 
-<a name="#configmap"/>
+<a name="configmap"/>
 
 #### Another Option
 
@@ -197,7 +197,7 @@ Then we just need to mount the [ConfigMap](https://docs.openshift.com/enterprise
 
 > For more information on how to create and mount a ConfigMap [follow this example](https://github.com/cesarvr/keycloak-examples/tree/master/import-export#mounting-file-into-rhsso-container).
 
-<a name="#expose"/>
+<a name="expose"/>
 
 ### Exposing Metrics
 
@@ -234,7 +234,7 @@ curl https://my-rhsso-server.com/auth/realms/master/metrics | grep memory
 #
 ```
 
-<a name="#dockerfile"/>
+<a name="dockerfile"/>
 
 ### Why Not Making An Image Instead ?
 
