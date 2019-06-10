@@ -24,7 +24,7 @@ In this console you can monitor see what's happening inside your identity provid
 
 <a name="prometheus"/>
 
-## Prometheus
+## Prometheus
 
 In this guide we are going to discuss how we can expose internal RHSSO usage information such as [Events](https://www.keycloak.org/docs/3.2/server_admin/topics/events.html) and JVM telemetry, to Prometheus.
 
