@@ -67,12 +67,12 @@ I didn’t have the patience nor the resources (about ≈4 GB+) in my cluster re
 I'm create a small script to create this **magic container**:
 
 ```sh
-oc create -f https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/prometheus/hack/pod.yml
+oc create -f https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/monitor/hack/pod.yml
 ```
 
-> The script will configure the deployment of a OpenJDK-8 container, so make sure that your cluster have access to this image, otherwise [replace it](https://github.com/cesarvr/keycloak-examples/blob/master/prometheus/hack/pod.yml#L10) with your favorite Java base image.
+> The script will configure the deployment of a OpenJDK-8 container, so make sure that your cluster have access to this image, otherwise [replace it](https://github.com/cesarvr/keycloak-examples/blob/master/monitor/hack/pod.yml#L10) with your favorite Java base image.
 
-The source spells for this magic can be [found here](https://github.com/cesarvr/keycloak-examples/blob/master/prometheus/hack/pod.yml).
+The source spells for this magic can be [found here](https://github.com/cesarvr/keycloak-examples/blob/master/monitor/hack/pod.yml).
 
 Then the following actions are performed as part of the image deployment:
 
