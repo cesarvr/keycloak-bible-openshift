@@ -64,7 +64,7 @@ In this section we are going export objects from one Keycloak/RHSSO server to an
 
 The best way to ensure we export to the right place is to adopt the configuration packed into the container, one way to achieve this is to reuse the container by modifying the containers starting process. 
 
-Until this moment the container is implicitly running by default the ``standalone.sh`` script, we are going to change that with ``sleep 3600``. That way we can access the container via bash and start the exporting process manually.
+Until this moment the container is implicitly running by default the ``standalone.sh`` script. we are going to change that so it runs ``sleep 3600``, this will start the container and keep it stuck so we can loging into the container via bash and start the **export**.
 
 #### Editing Deployment Configuration
 
