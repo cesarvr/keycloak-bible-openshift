@@ -20,7 +20,7 @@ One of the features of Keycloak/RHSSO is the audit console which offers a conven
 
 > RHSSO events console.
 
-In this console you can monitor see what's happening inside your identity provider like login errors, expiring token, invalid clients, etc. This console is perfect to detect failures or suspicious activities. 
+In this console you can monitor and see what's happening inside your identity provider like token errors, invalid login attempt, invalid clients, etc. This console is perfect to detect failures or suspicious activities. 
 
 <a name="prometheus"/>
 
