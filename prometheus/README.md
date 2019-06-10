@@ -1,6 +1,6 @@
 <a name="audit"/>
 
-## Auditing and Events
+## Auditing and Performance
 - [Using Prometheus](#prometheus)
   - [Requirements](#req)
   - [Building The Metrics Module](#EE)
@@ -12,9 +12,7 @@
   - [Why Not Making An Image Instead ?](#dockerfile)
 
 
-
-
-
+### Auditing
 
 One of the features of Keycloak/RHSSO is the audit console which offers a convenient way to see the transactions in the identity server.
 
