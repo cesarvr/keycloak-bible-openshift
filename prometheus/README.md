@@ -15,21 +15,23 @@
 
 ## Auditing and Events
 
-One of features of Keycloak/RHSSO is the audit console which offers a convenient way to see the transactions in the identity server.
+One of the features of Keycloak/RHSSO is the audit console which offers a convenient way to see the transactions in the identity server.
 
 ![](https://github.com/cesarvr/keycloak-examples/blob/master/docs/events.png?raw=true)
 
 > RHSSO events console.
 
-In this console you can setup email alerts that trigger under certain circumstances like login errors.
+In this console you can monitor see what's happening inside your identity provider like login errors, expiring token, invalid clients, etc. This console is perfect to detect failures or suspicious activities. 
 
 <a name="prometheus"/>
 
-## Using Prometheus
+## Prometheus
 
-In this guide we are going to discuss how we can expose those [SSO Events](https://www.keycloak.org/docs/3.2/server_admin/topics/events.html) and also JVM telemetry to Prometheus.
+In this guide we are going to discuss how we can expose internal RHSSO usage information such as [Events](https://www.keycloak.org/docs/3.2/server_admin/topics/events.html) and JVM telemetry, to Prometheus.
 
-To do this we just need to install the [keycloak-metrics-spi plugin](https://github.com/aerogear/keycloak-metrics-spi) which basically expose this information through the ``/metrics`` endpoint.
+To achieve this we are going to use the **keycloak-metrics-spi** plugin which extends Keycloak/RHSSO event system and expose this data via the ``/metrics`` endpoint which is then scraped by the Prometheus server.
+
+> [For more information about this plugin](](https://github.com/aerogear/keycloak-metrics-spi)).
 
 <a name="req"/>
 
