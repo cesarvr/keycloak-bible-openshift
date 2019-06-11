@@ -2,7 +2,6 @@
 
 ## Auditing and Performance
 - [Using Prometheus](#prometheus)
-  - [Requirements](#req)
   - [Building The Metrics Module](#EE)
     - [Enterprise Way](#building)
     - [Like Wozniak](#hacker)
@@ -31,12 +30,6 @@ In this guide we are going to discuss how we can expose internal RHSSO usage inf
 To achieve this we are going to use the **keycloak-metrics-spi** plugin which extends Keycloak/RHSSO event system and expose this data via the ``/metrics`` endpoint which is then scraped by the Prometheus server.
 
 > [For more information about this plugin](](https://github.com/aerogear/keycloak-metrics-spi)).
-
-<a name="req"/>
-
-### Requirements
-
-This guide assumes that you have Keycloak/RHSSO and Prometheus running in your OpenShift cluster.
 
 <a name="building"/>
 
