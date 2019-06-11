@@ -13,23 +13,24 @@
 
 ### Auditing
 
-One of the features of Keycloak/RHSSO is the audit console which offers a convenient way to see the transactions in the identity server.
-
+A very important feature of Keycloak/RHSSO is the [audit system](https://access.redhat.com/documentation/en-us/red_hat_single_sign-on/7.2/html/server_administration_guide/auditing_and_events) which provides observability around the users activity in the server.   
+ 
 <img align="center" src="https://github.com/cesarvr/keycloak-examples/blob/master/docs/events.png?raw=true" width="500">
 
 > RHSSO events console.
 
-In this console you can watch the activity inside the identity provider like tokens errors, invalid login attempt, clients access, etc. This feature is perfect to detect failures or suspicious activities in your service mesh. 
+This audit system can be managed in the **Events** section inside the RHSSO Console, there you can manage the events you want to watch, actions to take (like sending a email) and plugins. And thats another great news because you can extend this system by writing your own plugins.  
 
 <a name="prometheus"/>
 
 ## Prometheus
 
-In this guide we are going to discuss how we can expose internal RHSSO usage information such as [Events](https://www.keycloak.org/docs/3.2/server_admin/topics/events.html) and JVM telemetry, to Prometheus.
+Prometheus is a popular time series database used to collect and store metrics from microservices, then this data can be visualized using other tools like Grafana. The advantage of this is that visualization is decouple from data collection or in other words we can use the best tools for each job. 
+ 
+In this guide we are going to integrate the Red Hat SSO with Prometheus, using the excellent **keycloak-metrics-spi** plugin, this plugin not only expose audit or events, but it also expose JVM performance metrics giving us a complete picture of the identity provider. 
 
-To achieve this we are going to use the **keycloak-metrics-spi** plugin which extends Keycloak/RHSSO event system and expose this data via the ``/metrics`` endpoint which is then scraped by the Prometheus server.
+> [For more information about keycloak-metrics-spi plugin](](https://github.com/aerogear/keycloak-metrics-spi)).
 
-> [For more information about this plugin](](https://github.com/aerogear/keycloak-metrics-spi)).
 
 <a name="building"/>
 
