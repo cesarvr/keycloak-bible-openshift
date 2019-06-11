@@ -29,7 +29,7 @@ Prometheus is a popular time series database used to collect and store metrics f
  
 In this guide we are going to integrate the Red Hat SSO with Prometheus, using the excellent **keycloak-metrics-spi** plugin, this plugin not only expose audit or events, but it also expose JVM performance metrics giving us a complete picture of the identity provider. 
 
-> [For more information about keycloak-metrics-spi plugin](](https://github.com/aerogear/keycloak-metrics-spi)).
+> [For more information about keycloak-metrics-spi plugin](https://github.com/aerogear/keycloak-metrics-spi).
 
 
 <a name="building"/>
