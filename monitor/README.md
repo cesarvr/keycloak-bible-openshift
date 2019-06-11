@@ -87,7 +87,7 @@ Now we need to expose this JAR server to the RHSSO pod:
 ```
 > This basically creates a Hostname (**metrics-builder**) that will represent our container in the network, for more information take a look to [Kubernetes services.](https://kubernetes.io/docs/concepts/services-networking/service/)
 
-If we deployed our **metrics-builder** container in the same namespace as the RHSSO we can then test this by login into the RHSSO like this:
+If everything went as expected we can login into our RHSSO pod and test the connectivity using ``curl``:
 
 ```sh
 # Login into the RHSSO container.
