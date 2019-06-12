@@ -1,12 +1,12 @@
 main () {
- # copy fresh configuration file
+ # Copy fresh configuration file
  curl -o /opt/eap/standalone/configuration/standalone-openshift.xml https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/standalone-openshift.xml
 
- # copy modified rhsso launcher
+ # Copy modified rhsso launcher
  curl -o /opt/eap/bin/openshift-launch.sh https://raw.githubusercontent.com/cesarvr/keycloak-examples/master/modifying-keycloak-cfg/src/openshift-launch.sh
 
 
- # installing prometheus metrics exporter 
+ # Install prometheus metrics exporter 
  #
  # https://github.com/aerogear/keycloak-metrics-spi
  #
@@ -14,7 +14,7 @@ main () {
  curl http://metrics-builder/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar -o /opt/eap/providers/keycloak-metrics-spi-1.0.2-SNAPSHOT.jar
  
 
- # execute launcher
+ # Execute launcher
  sh /opt/eap/bin/openshift-launch.sh
 }
 
