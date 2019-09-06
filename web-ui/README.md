@@ -332,7 +332,7 @@ This function is very simple, it receive a token and build the parameters to be 
 let request = require('request')
 
 function exchange_token(token, success, error) {
- let params = { code: token, /*...* }
+ let params = { code: token }
 
 
  request({
