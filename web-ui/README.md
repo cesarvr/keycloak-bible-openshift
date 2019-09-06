@@ -394,3 +394,16 @@ sucess: {
 }
 
 ```
+
+
+# Resources
+
+- Getting Started With OAuth2:
+  - [Simple OAuth2 guide](https://aaronparecki.com/oauth-2-simplified/)
+
+
+- Detailed implementation of OAuth2:
+  - [OAuth2 Documentation](https://www.oauth.com/)
+  - [OAuth2 RFC](https://tools.ietf.org/html/rfc6749)
+    - [OAUth2 Best Practices](https://tools.ietf.org/html/draft-ietf-oauth-security-topics-12)
+
